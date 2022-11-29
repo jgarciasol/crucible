@@ -1,0 +1,2 @@
+FLASK_APP= cruciblefit
+FLASK_ENV=development
