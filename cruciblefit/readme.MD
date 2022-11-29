@@ -1,7 +1,9 @@
 Git clone repository
 
-make sure to make a virtual environment
+create a virtual environment: if needed `pip install virtualenv`
 
-then run pip install -r requirements.txt
+then, `python -m venv env`
 
-to run `flask run`
+then run `pip install -r requirements.txt`
+
+to run `flask run` from the crucible directory
