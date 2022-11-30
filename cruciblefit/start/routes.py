@@ -15,3 +15,7 @@ def add():
 @start.route("/view")
 def view():
     return render_template("view.html")
+
+@start.route('/login')
+def view():
+    return render_template("login.html")
