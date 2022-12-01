@@ -6,18 +6,22 @@ start = Blueprint("start", __name__)
 We will have to update this once we add more pages, such as for viewing, adding, deleting exercises.
 '''
 
+
 @start.route('/')
 def index():
     return render_template("index.html")
+
 
 @start.route("/add")
 def add():
     return render_template("add.html")
 
+
 @start.route("/view")
 def view():
     return render_template("view.html")
 
-@start.route('/login')
-def view():
+
+@start.route("/login")
+def login():
     return render_template("login.html")

@@ -10,3 +10,10 @@ class Food(db.Model):
     protein = db.Column(db.Integer, nullable=False)
     carbs =  db.Column(db.Integer, nullable=False)
     fats = db.Column(db.Integer, nullable=False)
+
+class Excersie(db.Model2):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), unique=True, nullable= False)
+    reps = db.Column(db.Integer, nullable=False)
+    sets = db.Column(db.Integer, nullable=False)
+
