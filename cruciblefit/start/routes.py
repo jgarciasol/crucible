@@ -19,5 +19,5 @@ def view():
     return render_template("view.html")
 
 @start.route('/login')
-def view():
+def login():
     return render_template("login.html")
