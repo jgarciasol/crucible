@@ -28,6 +28,7 @@ def add():
 def view():
     return render_template("view.html")
 
+<<<<<<< HEAD
 
 @start.route("/login", methods=['GET', 'POST'])
 def login():
@@ -79,3 +80,8 @@ def register():
         return render_template("registration.html")
     except Exception as e:
         return str(e)
+=======
+@start.route('/login')
+def login():
+    return render_template("login.html")
+>>>>>>> f908115bb94a59892e7977e256a0acbac20b4145
