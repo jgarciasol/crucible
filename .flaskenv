@@ -1,2 +1,2 @@
-FLASK_APP= cruciblefit
-FLASK_ENV=development
+FLASK_APP=cruciblefit
+FLASK_DEBUG=1
