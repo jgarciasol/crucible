@@ -80,7 +80,3 @@ def register():
     except Exception as e:
         return str(e)
 
-
-@start.route('/login')
-def login():
-    return render_template("login.html")
