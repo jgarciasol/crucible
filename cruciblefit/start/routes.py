@@ -1,4 +1,11 @@
-from flask import Blueprint, render_template, redirect, url_for, request
+from django.db import connection
+from flask import Blueprint, render_template, request, flash, session, escape
+from flask_sqlalchemy import session
+from flask import Flask, render_template, flash, request, url_for, redirect, session
+from passlib.hash import sha256_crypt
+import gc
+from wtforms import Form, BooleanField, StringField, PasswordField, validators
+
 
 start = Blueprint("start", __name__)
 
@@ -31,3 +38,44 @@ def login():
         else:
             return render_template("index.html")
     return render_template('login.html', error=error)
+
+
+class RegistrationForm(Form):
+    username = StringField('Username', [validators.Length(min=4, max=20)])
+    email = StringField('Email', [validators.Length(min=6, max=50)])
+    password = PasswordField('new password', [validators.data_required(),
+                                              validators.equal_to('confirm', message='Passwords must match')
+                                              ])
+    confirm = PasswordField('Repeat Password')
+    accept_terms_of_service = BooleanField('I accept the Terms of Service and Privacy Policy')
+
+
+@start.route('/register', methods=['GET', 'POST'])
+def register():
+    try:
+        form = RegistrationForm(request.form)
+        if request.method == "POST" and form.validate():
+            username = form.username.data
+            email = form.email.data
+            password = sha256_crypt.encrpyt((str(form.password.data)))
+            c, conn = connection()
+            x = c.execute("SELECT * FORM users WHERE username = (%s)"), (escape(username))
+            if int(x) > 0:
+                flash("That username is already taken, please choose another")
+                return render_template('registration.html', form=form)
+            else:
+                c.execute("Insert INTO users (username, password, email) VALUES (%s, %s, %s)"),
+                (escape(username), escape(password), escape(email))
+                conn.commit()
+                flash("Thanks for registering")
+                c.close()
+                conn.close()
+                gc.collect
+
+                session['logged_in'] = True
+                session['username'] = True
+
+                return render_template("index.html")
+        return render_template("registration.html")
+    except Exception as e:
+        return str(e)

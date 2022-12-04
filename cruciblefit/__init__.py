@@ -1,6 +1,8 @@
 from flask import Flask
 from .start.routes import start
 from .extensions import db
+
+
 def create_app():
     app = Flask(__name__)
 
