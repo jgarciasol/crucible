@@ -9,6 +9,8 @@
     <div class="container">
       <b><center>Welcome to the Crucible Fitness, Nutrition and Social App</center></b>
       <center>Please login</center>
+      img{ <img src="img/Cruciblelogo.jpg" alt="Crucible Logo" style="width:300px;height:300px;">
+      }
       <br>
       <form action="" method="post">
         <input type="text" placeholder="Username" name="username" value="{{
@@ -17,6 +19,7 @@
           request.form.password }}">
         <input class="btn btn-default" type="submit" value="Login">
       </form>
+      <p class="bottom">Don't Have an Account? <a class="bottom" href="{url_for('register_html')}}"> Sign Up here</a></p>
       {% if error %}
         <p class="error"><strong>Error:</strong> {{ error }}
       {% endif %}
