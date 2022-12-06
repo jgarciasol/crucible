@@ -12,5 +12,3 @@ SQLAlchemy==1.4.44
 Werkzeug==2.2.2
 zipp==3.11.0
 flask-login
-passlib==1.7.4
-WTForms==3.0.1
