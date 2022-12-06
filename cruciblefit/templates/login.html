@@ -17,6 +17,7 @@
           request.form.password }}">
         <input class="btn btn-default" type="submit" value="Login">
       </form>
+      <p class="bottom">Don't Have an Account? <a class="bottom" href="{url_for('register_html')}}"> Sign Up here</a></p>
       {% if error %}
         <p class="error"><strong>Error:</strong> {{ error }}
       {% endif %}
