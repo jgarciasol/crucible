@@ -1,7 +1,7 @@
-Django==3.2.16
+click==8.1.3
 Flask==2.2.2
+Flask-Login==0.6.2
 Flask-SQLAlchemy==3.0.2
-flask-login
 greenlet==2.0.1
 importlib-metadata==5.1.0
 itsdangerous==2.1.2
@@ -11,4 +11,3 @@ python-dotenv==0.21.0
 SQLAlchemy==1.4.44
 Werkzeug==2.2.2
 zipp==3.11.0
-flask-login

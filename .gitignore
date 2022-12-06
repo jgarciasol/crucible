@@ -1,5 +1,5 @@
 env/
 .vscode/
+.idea/
 *.pyc
 .DS_Store
-.idea/
