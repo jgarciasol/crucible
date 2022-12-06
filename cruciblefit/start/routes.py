@@ -1,10 +1,21 @@
-from django.db import connection
-from flask import Blueprint, render_template, request, flash, session, escape
-from flask_sqlalchemy import session
-from flask import Flask, render_template, flash, request, url_for, redirect, session
-from passlib.hash import sha256_crypt
 import gc
+
+from django.db import connection
+from flask import Blueprint, escape
+from flask import render_template, flash, request, session
+from flask_sqlalchemy import session
+from passlib.hash import sha256_crypt
 from wtforms import Form, BooleanField, StringField, PasswordField, validators
+
+
+class RegistrationForm(Form):
+    username = StringField('Username', [validators.Length(min=4, max=20)])
+    email = StringField('Email', [validators.Length(min=6, max=50)])
+    password = PasswordField('new password', [validators.data_required(),
+                                              validators.equal_to('confirm', message='Passwords must match')
+                                              ])
+    confirm = PasswordField('Repeat Password')
+    accept_terms_of_service = BooleanField('I accept the Terms of Service and Privacy Policy')
 
 
 start = Blueprint("start", __name__)
@@ -40,16 +51,6 @@ def login():
     return render_template('login.html', error=error)
 
 
-class RegistrationForm(Form):
-    username = StringField('Username', [validators.Length(min=4, max=20)])
-    email = StringField('Email', [validators.Length(min=6, max=50)])
-    password = PasswordField('new password', [validators.data_required(),
-                                              validators.equal_to('confirm', message='Passwords must match')
-                                              ])
-    confirm = PasswordField('Repeat Password')
-    accept_terms_of_service = BooleanField('I accept the Terms of Service and Privacy Policy')
-
-
 @start.route('/register', methods=['GET', 'POST'])
 def register():
     try:
@@ -70,7 +71,7 @@ def register():
                 flash("Thanks for registering")
                 c.close()
                 conn.close()
-                gc.collect
+                gc.collect()
 
                 session['logged_in'] = True
                 session['username'] = True
