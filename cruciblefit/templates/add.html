@@ -56,28 +56,28 @@
                     </h3>
                     <hr/>
 
-                    <form action="" method="POST" role="form">
+                    <form action="{{ url_for('start.add') }}" method="POST" role="form">
 
                         <div class="row">
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label for="food-name">Food Name</label>
                                     <input type="text" class="form-control" id="food-name" name="food-name"
-                                           placeholder="Food Name" autofocus>
+                                           placeholder="Food Name" value = "{{ food.name }}" autofocus>
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label for="protein">Protein</label>
                                     <input type="number" class="form-control" id="protein" name="protein"
-                                           placeholder="Protein">
+                                           placeholder="Protein" value = "{{ food.protein }}">
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label for="carbohydrates">Carbohydrates</label>
                                     <input type="number" class="form-control" id="carbohydrates" name="carbohydrates"
-                                           placeholder="Carbohydrates">
+                                           placeholder="Carbohydrates" value = "{{ food.carbs }}">
                                 </div>
                             </div>
                         </div>
@@ -86,13 +86,14 @@
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label for="fat">Fat</label>
-                                    <input type="number" class="form-control" id="fat" name="fat" placeholder="Fat">
+                                    <input type="number" class="form-control" id="fat" name="fat" placeholder="Fat" value = "{{ food.carbs }}">
                                 </div>
                             </div>
 
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label style="visibility:hidden">submit</label>
+                                    <input type="hidden" name="food-id" value="{{ food.id }}">
                                     <button type="submit" class="btn btn-primary btn-block">
                                         <i class="glyphicon glyphicon-upload"></i> Submit
                                     </button>
@@ -128,7 +129,26 @@
                         </tr>
                         </thead>
                         <tbody>
+                        {% for food in foods %}
                         <tr>
+                            <td>{{ food.id }}</td>
+                            <td>{{ food.name }}</td>
+                            <td>{{ food.protein }}</td>
+                            <td>{{ food.carbs }}</td>
+                            <td>{{ food.fats }}
+                            </th>
+                            <td>{{ food.calories }}</td>
+                            <td>
+                                <a href="{{ url_for('start.edit_food', food_id=food.id) }}" class="btn btn-default btn-xs">
+                                    <i class="glyphicon glyphicon-pencil"></i> Edit
+                                </a>
+                                <a href="{{ url_for('start.delete_food', food_id=food.id) }}" class="btn btn-danger btn-xs">
+                                    <i class="glyphicon glyphicon-trash"></i> Delete
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                       <!--- <tr>
                             <td>1</td>
                             <td>Burger</td>
                             <td>20</td>
@@ -144,24 +164,7 @@
                                     <i class="glyphicon glyphicon-trash"></i> Delete
                                 </a>
                             </td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>Burger</td>
-                            <td>20</td>
-                            <td>25</td>
-                            <td>15
-                            </th>
-                            <td>315</td>
-                            <td>
-                                <a href="#" class="btn btn-default btn-xs">
-                                    <i class="glyphicon glyphicon-pencil"></i> Edit
-                                </a>
-                                <a href="#" class="btn btn-danger btn-xs">
-                                    <i class="glyphicon glyphicon-trash"></i> Delete
-                                </a>
-                            </td>
-                        </tr>
+                        </tr> -->
                         </tbody>
                     </table>
                 </div>
