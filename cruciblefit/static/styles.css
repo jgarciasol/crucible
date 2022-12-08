@@ -11,9 +11,9 @@ body {
 
 #homeJumbo {
 	position: relative;
-	min-height: 180px;
+	min-height: 480px;
 	background: rgba(44, 62, 80, .8);
-	background-image: url('./img/bg.jpg'); /* should change this image; located in img directory*/
+	background-image: url('./img/Believe.jpg'); /* should change this image; located in img directory*/
 	background-size: cover;
 	background-repeat: no-repeat;
 	border-bottom: 2px solid rgba(44, 62, 80, .8);

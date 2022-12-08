@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
+        <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Crucible Fitness | Home</title>
@@ -20,14 +20,9 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <title>Fitness Page</title>
 </head>
 <body>
-
-{# this is a temporary nav bar for logging out, only for testing #}
-{# TODO: make a proper nav bar or button for logging out #}
-{# TODO: make a template for all pages so we dont have to change
-            all the html files to add functionality to crucible #}
-
 <nav class="navbar navbar-fixed-top">
     <button
             class="navbar-toggler"
@@ -41,9 +36,8 @@
         <div class="navbar-nav">
             {% if user.is_authenticated %}
                 <a class="nav-item nav-link" id="home" href="{{ url_for('start.index') }}">Home</a>
-                <a class="nav-item nav-link" id ="fitness" href="{{url_for('start.fitnessView') }}">Fitness</a>
+                <a class="nav-item nav-link" id ="fitness" href="{{url_for('start.fitnessView')}}">Fitness</a>
                 <a class="nav-item nav-link" id="logout" href="{{ url_for('auth.logout') }}">Logout</a>
-
             {% else %}
                 <a class="nav-item nav-link" id="login" href="{{ url_for('auth.login') }}">Login</a>
                 <a class="nav-item nav-link" id="signUp" href="{{ url_for('auth.sign_up') }}">Sign Up</a>
@@ -69,7 +63,7 @@
                             <a href="{{ url_for('start.index') }}" title="Home">Home</a>
                         </li>
                         <li role="presentation">
-                            <a href="{{ url_for('start.add') }}" title="Add Food Item">Add Nutrition</a>
+                            <a href="{{ url_for('start.add_ex') }}" title="Add Exercise">Add Exercise</a>
                         </li>
                     </ul>
                 </div>
@@ -119,10 +113,10 @@
                     </a>
                 </div>
                 <ul class="list-group">
-                    <li class="list-group-item text-bold"><span class="badge">{{ log_date['protein'] }}</span> Protein</li>
-                    <li class="list-group-item text-bold"><span class="badge">{{ log_date['carbs'] }}</span> Carbohydrate</li>
-                    <li class="list-group-item text-bold"><span class="badge">{{ log_date['fats'] }}</span> Fat</li>
-                    <li class="list-group-item text-bold"><span class="badge">{{ log_date['calories'] }}</span> Calories</li>
+                    <li class="list-group-item text-bold"><span class="badge">{{ log_date['protein'] }}</span> Name</li>
+                    <li class="list-group-item text-bold"><span class="badge">{{ log_date['carbs'] }}</span> Type</li>
+                    <li class="list-group-item text-bold"><span class="badge">{{ log_date['fats'] }}</span> Reps</li>
+                    <li class="list-group-item text-bold"><span class="badge">{{ log_date['calories'] }}</span> Sets</li>
                 </ul>
             </div>
         </div>
@@ -130,8 +124,8 @@
     </div>
     {% endfor %}
 
-       
-   
+
+
 
 
 </div>
@@ -142,5 +136,7 @@
 <!-- Bootstrap JavaScript -->
 <!-- CHANGE AS WELL!!!!!!-->
 <script src="{{ url_for('static', filename = 'bs/js/bootstrap.min.js') }}"></script>
+</body>
+</html>
 </body>
 </html>
