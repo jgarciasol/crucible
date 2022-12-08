@@ -17,7 +17,29 @@ We will have to update this once we add more pages, such as for viewing, adding,
 @start.route('/')
 @login_required
 def index():
-    return render_template("index.html", user=current_user)
+    logs = Log.query.order_by(Log.date.desc()).all()
+    log_dates = []
+    #outer loop, loops through each log date in the database
+    for log in logs:
+        protein = 0
+        carbs = 0
+        fats = 0
+        calories = 0
+        #loop through each food in the log dates to update macro values
+        for food in log.foods:
+            protein += food.protein
+            carbs += food.carbs
+            fats += food.fats
+            calories += food.calories
+        #append to dictionary that gets send to index.html
+        log_dates.append({
+            'log_date': log, 
+            'protein': protein,
+            'fats': fats,
+            'carbs': carbs,
+            'calories': calories
+            })
+    return render_template("index.html", user=current_user, log_dates=log_dates)
 
 
 @start.route('/create_log', methods = ['POST'])
