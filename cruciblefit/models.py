@@ -68,4 +68,4 @@ logs = db.Table('log_items',
 class Log(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     date = db.Column(db.Date, nullable = False)
-    foods = db.relationship('Food', secondary=logs) 
+    foods = db.relationship('Food', secondary=logs, lazy='dynamic') 

@@ -79,12 +79,12 @@
         <div class="col-lg-4 col-lg-offset-4">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <form action="" method="POST" role="form">
+                    <form action="{{ url_for('start.create_log') }}" method="POST" role="form">
 
                         <div class="form-group">
                             <label><i class="glyphicon glyphicon-plus-sign"></i> Add New Date</label>
                             <div class="input-group">
-                                <input type="date" class="form-control" placeholder="Select New Date" aria-label="date"
+                                <input type="date" class="form-control" name="date" placeholder="Select New Date" aria-label="date"
                                        aria-describedby="add-btn">
                                 <span class="input-group-btn">
 										<button type="submit" class="btn btn-primary" id="add-btn">
@@ -111,7 +111,7 @@
                 <div class="panel-body text-bold">
                     <i class="glyphicon glyphicon-calendar"></i> December 14, 2017
 
-                    <a class="btn btn-primary btn-xs pull-right" href="{{ url_for('start.view') }}">
+                    <a class="btn btn-primary btn-xs pull-right" href="{{ url_for('start.view', log_id = 1) }}">
                         View <i class="glyphicon glyphicon-arrow-right"></i>
                     </a>
                 </div>
@@ -128,7 +128,7 @@
                 <div class="panel-body text-bold">
                     <i class="glyphicon glyphicon-calendar"></i> December 14, 2017
 
-                    <a class="btn btn-primary btn-xs pull-right" href="{{ url_for('start.view') }}">
+                    <a class="btn btn-primary btn-xs pull-right" href="{{ url_for('start.view', log_id = 1) }}">
                         View <i class="glyphicon glyphicon-arrow-right"></i>
                     </a>
                 </div>
@@ -145,7 +145,7 @@
                 <div class="panel-body text-bold">
                     <i class="glyphicon glyphicon-calendar"></i> December 14, 2017
 
-                    <a class="btn btn-primary btn-xs pull-right" href="{{ url_for('start.view') }}">
+                    <a class="btn btn-primary btn-xs pull-right" href="{{ url_for('start.view', log_id = 1) }}">
                         View <i class="glyphicon glyphicon-arrow-right"></i>
                     </a>
                 </div>
@@ -162,7 +162,7 @@
                 <div class="panel-body text-bold">
                     <i class="glyphicon glyphicon-calendar"></i> December 14, 2017
 
-                    <a class="btn btn-primary btn-xs pull-right" href="{{ url_for('start.view') }}">
+                    <a class="btn btn-primary btn-xs pull-right" href="{{ url_for('start.view',log_id = 1) }}">
                         View <i class="glyphicon glyphicon-arrow-right"></i>
                     </a>
                 </div>

@@ -51,25 +51,15 @@
         <div class="col-lg-4 col-lg-offset-4">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <form action="" method="POST" role="form">
+                    <form action="{{ url_for('start.add_food_to_log', log_id = log.id) }}" method="POST" role="form">
 
                         <div class="form-group">
                             <label>Add Food</label>
                             <div class="input-group">
                                 <select class="form-control" name="food-select">
-                                    <option value=1>Burger</option>
-
-                                    <option value=2>Pizza</option>
-
-                                    <option value=3>Shake</option>
-
-                                    <option value=4>Burrito</option>
-
-                                    <option value=5>Steak</option>
-
-                                    <option value=6>Banana</option>
-
-                                    <option value=7>Pasta</option>
+                                    {% for food in foods %}
+                                        <option value="{{ food.id }}">{{ food.name }}</option>
+                                    {% endfor %}
                                 </select>
                                 <span class="input-group-btn">
 										<button type="submit" class="btn btn-primary" id="add-btn">
@@ -90,28 +80,28 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <h3 class="lean-h text-black">
-                        <i class="glyphicon glyphicon-calendar"></i> December 14, 2017
+                        <i class="glyphicon glyphicon-calendar"></i> {{ log.date.strftime('%B %d, %Y') }}
                     </h3>
 
                     <div class="row">
                         <div class="col-lg-3">
                             <h4 class="lean-h">
-                                Protein: &nbsp;<strong class="f25">60</strong>
+                                Protein: &nbsp;<strong class="f25">{{ totals['protein'] }}</strong>
                             </h4>
                         </div>
                         <div class="col-lg-3">
                             <h4 class="lean-h">
-                                Carbohydrates: <strong class="f25">55</strong>
+                                Carbohydrates: <strong class="f25">{{ totals['carbs'] }}</strong>
                             </h4>
                         </div>
                         <div class="col-lg-3">
                             <h4 class="lean-h">
-                                Fat: <strong class="f25">55</strong>
+                                Fat: <strong class="f25">{{ totals['fats'] }}</strong>
                             </h4>
                         </div>
                         <div class="col-lg-3">
                             <h4 class="lean-h">
-                                Calories: <strong class="f25">955</strong>
+                                Calories: <strong class="f25">{{ totals['calories'] }}</strong>
                             </h4>
                         </div>
                     </div>
@@ -131,33 +121,21 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td>1</td>
-                            <td>Burger</td>
-                            <td>20</td>
-                            <td>25</td>
-                            <td>15
+                            {% for food in log.foods %}
+                            <td>{{ loop.index }}</td>
+                            <td>{{ food.name }}</td>
+                            <td>{{ food.protein }}</td>
+                            <td>{{ food.carbs }}</td>
+                            <td>{{ food.fats }}
                             </th>
-                            <td>315</td>
+                            <td>{{ food.calories }}</td>
                             <td>
-                                <a href="#" class="btn btn-danger btn-xs">
+                                <a href="{{ url_for('start.remove_food_from_log_date', log_id = log.id, food_id = food.id ) }}" class="btn btn-danger btn-xs">
                                     <i class="glyphicon glyphicon-trash"></i> Delete
                                 </a>
                             </td>
                         </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Burger</td>
-                            <td>20</td>
-                            <td>25</td>
-                            <td>15
-                            </th>
-                            <td>315</td>
-                            <td>
-                                <a href="#" class="btn btn-danger btn-xs">
-                                    <i class="glyphicon glyphicon-trash"></i> Delete
-                                </a>
-                            </td>
-                        </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
