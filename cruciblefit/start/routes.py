@@ -2,7 +2,7 @@ from flask import Blueprint, escape, redirect, url_for
 from flask import render_template, flash, request, session
 from flask_sqlalchemy import session
 from flask_login import login_user, login_required, logout_user, current_user
-from cruciblefit.models import Food, Log
+from cruciblefit.models import Food, Log, Exercise, Workout
 from cruciblefit.extensions import db
 from datetime import datetime
 
