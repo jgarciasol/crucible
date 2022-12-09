@@ -13,6 +13,7 @@
     <option name="ignoredIdentifiers">
       <list>
         <option value="wtforms.TextField" />
+        <option value="crucible.cruciblefit.start.routes.cruciblefit" />
       </list>
     </option>
   </inspection_tool>
