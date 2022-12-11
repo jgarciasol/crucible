@@ -11,13 +11,16 @@ body {
 
 #homeJumbo {
 	position: relative;
-	min-height: 630px;
-	background: rgba(44, 62, 80, .8);
-	background-image: url('./img/Believe.jpg'); /* should change this image; located in img directory*/
-	background-size: cover;
-	background-repeat: no-repeat;
-	border-bottom: 2px solid rgba(90, 62, 80, .8);
-	box-shadow: 7px 1px 2px 2px rgba(44, 62, 80, .8);
+	min-height: 300px;
+	/* should change this image; located in img directory*/
+	height: 100%;
+	background-size: 100%;
+	background: url('./img/crucible_icon.png') no-repeat center;
+	background-attachment: inherit;
+	background-color: inherit;
+
+	/*border-bottom: 2px solid rgba(90, 62, 80, .8);*/
+	/*box-shadow: 7px 1px 2px 2px rgba(44, 62, 80, .8);*/
 }
 #homeJumbo > div.overlay {
 	position: absolute;
@@ -51,7 +54,7 @@ body {
 .nav-pills>li.active>a, .nav-pills>li.active>a:hover, 
 .nav-pills>li.active>a:focus {
 	color: white;
-	border-bottom: 3px solid #2fa4e7;
+	border-bottom: 3px solid #f05322;
 	font-weight: bolder;
 	background: rgba(0, 0, 0, .4);
 }

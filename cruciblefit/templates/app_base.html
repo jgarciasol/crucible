@@ -24,8 +24,9 @@
 <body>
 <nav class="navbar navbar-fixed-top">
     <div class="container-fluid">
-        <ul class="nav navbar-nav navbar-right">
+        <ul class="nav navbar-nav navbar-right" style="background-color: rgba(44, 62, 80, .8);">
             {% if user.is_authenticated %}
+{#                <li><a href="{{ url_for('start.edit_profile') }}"><span class="glyphicon glyphicon-user"> Profile</span></a> </li>#}
                 <li><a href="{{ url_for('auth.logout') }}"><span class="glyphicon glyphicon-log-out"></span> Log Out</a>
                 </li>
             {% endif %}

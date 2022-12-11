@@ -14,10 +14,13 @@ class User(db.Model, UserMixin):
     first_name = db.Column(db.String(150))
     weight = db.Column(db.Integer, nullable=False, default=100)
     height = db.Column(db.Integer, nullable=False, default=68)
-    age = db.Column(db.Integer, nullable=False, default=18)
     dob = db.Column(db.Date, nullable=False, default=func.now())
     workouts = db.relationship('Workout')
     foods = db.relationship('Food')  # added
+
+    @property
+    def age(self):
+        return int((func.now() - self.dob).days / 365.25)
 
 
 '''

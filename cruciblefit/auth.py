@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from .models import User
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -39,9 +41,13 @@ def sign_up():
     if request.method == 'POST':
         new_email = request.form.get('email')
         new_first_name = request.form.get('firstName')
+        new_weight = request.form.get('weight')
+        new_height = request.form.get('height')
+        new_dob = request.form.get('dob')
         new_password1 = request.form.get('password1')
         password2 = request.form.get('password2')
 
+        new_dob = datetime.strptime(new_dob, '%Y-%m-%d')
         user = User.query.filter_by(email=new_email).first()
         if user:
             flash('Email already exists.', category='error')
@@ -55,7 +61,7 @@ def sign_up():
             flash('Password must be at least 7 characters.', category='error')
         else:
             new_user = User(email=new_email, first_name=new_first_name, password=generate_password_hash(
-                new_password1, method='sha256'))
+                new_password1, method='sha256'), weight=new_weight, height=new_height, dob=new_dob)
             db.session.add(new_user)
             db.session.commit()
             login_user(new_user, remember=True)
