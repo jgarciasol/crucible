@@ -23,12 +23,14 @@
 </head>
 <body>
 <nav class="navbar navbar-fixed-top">
-    <ul class="nav navbar-nav navbar-right">
-        {% if user.is_authenticated %}
-            <li><a href="{{ url_for('auth.logout') }}"><span class="glyphicon glyphicon-log-out"></span> Log Out</a>
-            </li>
-        {% endif %}
-    </ul>
+    <div class="container-fluid">
+        <ul class="nav navbar-nav navbar-right">
+            {% if user.is_authenticated %}
+                <li><a href="{{ url_for('auth.logout') }}"><span class="glyphicon glyphicon-log-out"></span> Log Out</a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
 </nav>
 
 <div class="container-fluid" id="wrapper">

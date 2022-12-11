@@ -17,7 +17,7 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <h3 class="lean-h text-black">
-                        <i class="glyphicon glyphicon-plus-sign"></i> New Nutrition Form
+                        <i class="glyphicon glyphicon-plus-sign"></i> Add New Food Item
                     </h3>
                     <hr/>
 
@@ -28,21 +28,21 @@
                                 <div class="form-group">
                                     <label for="food-name">Food Name</label>
                                     <input type="text" class="form-control" id="food-name" name="food-name"
-                                           placeholder="Food Name" value = "{{ food.name }}" autofocus>
+                                           placeholder="Food Name" value="{{ food.name }}" autofocus>
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label for="protein">Protein</label>
                                     <input type="number" class="form-control" id="protein" name="protein"
-                                           placeholder="Protein" value = "{{ food.protein }}">
+                                           placeholder="Protein" value="{{ food.protein }}">
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label for="carbohydrates">Carbohydrates</label>
                                     <input type="number" class="form-control" id="carbohydrates" name="carbohydrates"
-                                           placeholder="Carbohydrates" value = "{{ food.carbs }}">
+                                           placeholder="Carbohydrates" value="{{ food.carbs }}">
                                 </div>
                             </div>
                         </div>
@@ -51,7 +51,8 @@
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label for="fat">Fat</label>
-                                    <input type="number" class="form-control" id="fat" name="fat" placeholder="Fat" value = "{{ food.carbs }}">
+                                    <input type="number" class="form-control" id="fat" name="fat" placeholder="Fat"
+                                           value="{{ food.carbs }}">
                                 </div>
                             </div>
 
@@ -95,41 +96,26 @@
                         </thead>
                         <tbody>
                         {% for food in foods %}
-                        <tr>
-                            <td>{{ food.id }}</td>
-                            <td>{{ food.name }}</td>
-                            <td>{{ food.protein }}</td>
-                            <td>{{ food.carbs }}</td>
-                            <td>{{ food.fats }}
-                            </th>
-                            <td>{{ food.calories }}</td>
-                            <td>
-                                <a href="{{ url_for('start.edit_food', food_id=food.id) }}" class="btn btn-default btn-xs">
-                                    <i class="glyphicon glyphicon-pencil"></i> Edit
-                                </a>
-                                <a href="{{ url_for('start.delete_food', food_id=food.id) }}" class="btn btn-danger btn-xs">
-                                    <i class="glyphicon glyphicon-trash"></i> Delete
-                                </a>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td>{{ food.id }}</td>
+                                <td>{{ food.name }}</td>
+                                <td>{{ food.protein }}</td>
+                                <td>{{ food.carbs }}</td>
+                                <td>{{ food.fats }}
+                                </th>
+                                <td>{{ food.calories }}</td>
+                                <td>
+                                    <a href="{{ url_for('start.edit_food', food_id=food.id) }}"
+                                       class="btn btn-default btn-xs">
+                                        <i class="glyphicon glyphicon-pencil"></i> Edit
+                                    </a>
+                                    <a href="{{ url_for('start.delete_food', food_id=food.id) }}"
+                                       class="btn btn-danger btn-xs">
+                                        <i class="glyphicon glyphicon-trash"></i> Delete
+                                    </a>
+                                </td>
+                            </tr>
                         {% endfor %}
-                       <!--- <tr>
-                            <td>1</td>
-                            <td>Burger</td>
-                            <td>20</td>
-                            <td>25</td>
-                            <td>15
-                            </th>
-                            <td>315</td>
-                            <td>
-                                <a href="#" class="btn btn-default btn-xs">
-                                    <i class="glyphicon glyphicon-pencil"></i> Edit
-                                </a>
-                                <a href="#" class="btn btn-danger btn-xs">
-                                    <i class="glyphicon glyphicon-trash"></i> Delete
-                                </a>
-                            </td>
-                        </tr> -->
                         </tbody>
                     </table>
                 </div>

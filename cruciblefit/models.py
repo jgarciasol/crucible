@@ -12,8 +12,12 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(150), unique=True)
     password = db.Column(db.String(150))
     first_name = db.Column(db.String(150))
+    weight = db.Column(db.Integer, nullable=False, default=100)
+    height = db.Column(db.Integer, nullable=False, default=68)
+    age = db.Column(db.Integer, nullable=False, default=18)
+    dob = db.Column(db.Date, nullable=False, default=func.now())
     workouts = db.relationship('Workout')
-    foods = db.relationship('Food') #added
+    foods = db.relationship('Food')  # added
 
 
 '''
@@ -32,22 +36,24 @@ class Workout(db.Model):
 class Exercise(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True, nullable=False)
-    type = db.Column(db.String(50), nullable=False)
-    reps = db.Column(db.Integer, nullable=False)
-    sets = db.Column(db.Integer, nullable=False)
+    type = db.Column(db.String(50), nullable=True, default='cardio')
+    reps = db.Column(db.Integer, nullable=False, default=0)
+    sets = db.Column(db.Integer, nullable=False, default=0)
     workout_id = db.Column(db.Integer, db.ForeignKey('workout.id'))
 
 
 '''
 Nutrition
 '''
+
+
 class Food(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), unique=True, nullable=False)
-    protein = db.Column(db.Integer, nullable=False)
-    carbs = db.Column(db.Integer, nullable=False)
-    fats = db.Column(db.Integer, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id')) #added
+    name = db.Column(db.String(50), unique=False, nullable=False, default='food item')
+    protein = db.Column(db.Integer, nullable=False, default=0)
+    carbs = db.Column(db.Integer, nullable=False, default=0)
+    fats = db.Column(db.Integer, nullable=False, default=0)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))  # added
 
     @property
     def calories(self):
@@ -58,14 +64,16 @@ class Food(db.Model):
         return total_calories
 
 
-#Many-to-Many relationship
-#https://flask-sqlalchemy.palletsprojects.com/en/2.x/models/
-#Limitations: you can only add one food at a time. Can only add one food per day
+# Many-to-Many relationship
+# https://flask-sqlalchemy.palletsprojects.com/en/2.x/models/
+# Limitations: you can only add one food at a time. Can only add one food per day
 logs = db.Table('log_items',
-    db.Column('log_id', db.Integer, db.ForeignKey('log.id'),primary_key=True),
-    db.Column('food_id', db.Integer,  db.ForeignKey('food.id'),primary_key=True)
-)
+                db.Column('log_id', db.Integer, db.ForeignKey('log.id'), primary_key=True),
+                db.Column('food_id', db.Integer, db.ForeignKey('food.id'), primary_key=True)
+                )
+
+
 class Log(db.Model):
-    id = db.Column(db.Integer, primary_key = True)
-    date = db.Column(db.Date, nullable = False)
-    foods = db.relationship('Food', secondary=logs, lazy='dynamic') 
+    id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.Date, nullable=False)
+    foods = db.relationship('Food', secondary=logs, lazy='dynamic')
