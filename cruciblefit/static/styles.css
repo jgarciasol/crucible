@@ -11,12 +11,12 @@ body {
 
 #homeJumbo {
 	position: relative;
-	min-height: 480px;
+	min-height: 630px;
 	background: rgba(44, 62, 80, .8);
 	background-image: url('./img/Believe.jpg'); /* should change this image; located in img directory*/
 	background-size: cover;
 	background-repeat: no-repeat;
-	border-bottom: 2px solid rgba(44, 62, 80, .8);
+	border-bottom: 2px solid rgba(90, 62, 80, .8);
 	box-shadow: 7px 1px 2px 2px rgba(44, 62, 80, .8);
 }
 #homeJumbo > div.overlay {
