@@ -1,52 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Food Tracker | View Details</title>
-
-    <link href="https://fonts.googleapis.com/css?family=Oswald|Ubuntu:400,700" rel="stylesheet">
-
-    <!-- Bootstrap CSS -->
-    <!-- change filename = bs/css/united.min.css to something else !!!!! this gives it the current tables with orange button look-->
-    <link rel="stylesheet" href="{{ url_for('static', filename = 'bs/css/united.min.css') }}"/>
-    <!-- Change the styles.css !!!!!!! -->
-    <link rel="stylesheet" href="{{ url_for('static', filename = 'styles.css') }}"/>
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-</head>
-<body>
-
-<div class="container-fluid" id="wrapper">
-
-    <div class="row" id="homeJumbo">
-        <div class="overlay"></div>
-        <div class="col-lg-12">
-            <h1>
-                <a href="{{ url_for('start.index') }}">CRUCIBLE FITNESS</a>
-            </h1>
-
-            <div class="row t20">
-                <div class="col-lg-4 col-lg-offset-4">
-                    <ul class="nav nav-pills nav-justified">
-                        <li role="presentation">
-                            <a href="{{ url_for('start.index') }}" title="Home">Home</a>
-                        </li>
-                        <li role="presentation">
-                            <a href="{{ url_for('start.add') }}" title="Add Food Item">Add Nutrition</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
+{% extends "app_base.html" %}
+{% block title %}Crucible Fitness | Nutrition{% endblock %}
+{% block tabs %}
+    <li role="presentation" class="active">
+        <a href="{{ url_for('start.add') }}" title="Add Food Item">Nutrition</a>
+    </li>
+    <li role="presentation">
+        <a href="{{ url_for('start.index') }}" title="Home">Home</a>
+    </li>
+    <li role="presentation">
+        <a href="{{ url_for('start.fitness_view') }}" title="Add Workout">Workout</a>
+    </li>
+{% endblock %}
+{% block content %}
     <div class="row t20">
         <div class="col-lg-4 col-lg-offset-4">
             <div class="panel panel-default">
@@ -142,14 +107,4 @@
             </div>
         </div>
     </div>
-
-</div>
-
-<!-- jQuery -->
-<!-- CHANGE PLEASE: Comes from bs directory-->
-<script src="{{ url_for('static', filename = 'bs/js/jquery.min.js') }}"></script>
-<!-- Bootstrap JavaScript -->
-<!-- CHANGE AS WELL!!!!!!-->
-<script src="{{ url_for('static', filename = 'bs/js/bootstrap.min.js') }}"></script>
-</body>
-</html>
+{% endblock %}

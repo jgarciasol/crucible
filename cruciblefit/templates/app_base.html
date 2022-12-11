@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Crucible Fitness | Home{% endblock %}</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Oswald|Ubuntu:400,700" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <!-- change filename = bs/css/united.min.css to something else !!!!! this gives it the current tables with orange button look-->
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'bs/css/united.min.css') }}"/>
+    <!-- Change the styles.css !!!!!!! -->
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'styles.css') }}"/>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+
+{# this is a temporary nav bar for logging out, only for testing #}
+{# TODO: make a proper nav bar or button for logging out #}
+
+<nav class="navbar navbar-fixed-top">
+    <div class="collapse navbar-collapse" id="navbar">
+        <div class="navbar-nav">
+            {% if user.is_authenticated %}
+                <a class="nav-item nav-link" id="home" href="{{ url_for('start.index') }}">Home</a>
+                <a class="nav-item nav-link" id="fitness" href="{{ url_for('start.fitness_view') }}">Fitness</a>
+                <a class="nav-item nav-link" id="logout" href="{{ url_for('auth.logout') }}">Logout</a>
+            {% else %}
+                <a class="nav-item nav-link" id="login" href="{{ url_for('auth.login') }}">Login</a>
+                <a class="nav-item nav-link" id="signUp" href="{{ url_for('auth.sign_up') }}">Sign Up</a>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid" id="wrapper">
+
+    <div class="row" id="homeJumbo">
+        <div class="overlay"></div>
+        <div class="col-lg-12">
+            <h1>
+                <!-- LINKS IT TO INDEX PAGE-->
+                <a href="{{ url_for('start.index') }}">CRUCIBLE FITNESS</a>
+            </h1>
+
+            <div class="row t20">
+                <div class="col-lg-4 col-lg-offset-4">
+                    <ul class="nav nav-pills nav-justified">
+                        {% block tabs %}{% endblock %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">{% block content %} {% endblock %}</div>
+</div>
+
+<!-- jQuery -->
+<!-- CHANGE PLEASE: Comes from bs directory-->
+<script src="{{ url_for('static', filename = 'bs/js/jquery.min.js') }}"></script>
+<!-- Bootstrap JavaScript -->
+<!-- CHANGE AS WELL!!!!!!-->
+<script src="{{ url_for('static', filename = 'bs/js/bootstrap.min.js') }}"></script>
+</body>
+</html>

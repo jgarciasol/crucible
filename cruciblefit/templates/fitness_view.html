@@ -1,13 +1,13 @@
 {% extends "app_base.html" %}
-{% block title %}Crucible Fitness | Home{% endblock %}
+{% block title %}Crucible Fitness | Fitness{% endblock %}
 {% block tabs %}
     <li role="presentation">
         <a href="{{ url_for('start.add') }}" title="Add Food Item">Nutrition</a>
     </li>
-    <li role="presentation" class="active">
+    <li role="presentation">
         <a href="{{ url_for('start.index') }}" title="Home">Home</a>
     </li>
-    <li role="presentation">
+    <li role="presentation" class="active">
         <a href="{{ url_for('start.fitness_view') }}" title="Add Workout">Workout</a>
     </li>
 {% endblock %}
@@ -57,15 +57,15 @@
                         </div>
                         <ul class="list-group">
                             <li class="list-group-item text-bold"><span class="badge">{{ log_date['protein'] }}</span>
-                                Protein
+                                Name
                             </li>
                             <li class="list-group-item text-bold"><span class="badge">{{ log_date['carbs'] }}</span>
-                                Carbohydrate
+                                Type
                             </li>
-                            <li class="list-group-item text-bold"><span class="badge">{{ log_date['fats'] }}</span> Fat
+                            <li class="list-group-item text-bold"><span class="badge">{{ log_date['fats'] }}</span> Reps
                             </li>
                             <li class="list-group-item text-bold"><span class="badge">{{ log_date['calories'] }}</span>
-                                Calories
+                                Sets
                             </li>
                         </ul>
                     </div>

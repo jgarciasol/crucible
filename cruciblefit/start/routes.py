@@ -156,8 +156,8 @@ def remove_food_from_log_date(log_id, food_id):
 
 @start.route('/fitness')
 @login_required
-def fitnessView():
-    return render_template('fitnessView.html', user=current_user)
+def fitness_view():
+    return render_template('fitness_view.html', user=current_user)
 
 
 @start.route("/add_ex", methods=['POST'])
@@ -177,7 +177,7 @@ def add_ex():
         exercise.sets = ex_sets
     else:
         new_workout = Workout(name=ex_name, type=ex_type, reps=ex_reps,
-                        sets=ex_sets)
+                              sets=ex_sets)
 
         db.session.add(new_workout)
 
