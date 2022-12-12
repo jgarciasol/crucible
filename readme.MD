@@ -6,7 +6,9 @@
 
     then, `python -m venv env`
     
-    `source env/bin/activate`
+    source env/bin/activate
+    
+    if on windows . env\scripts\activate
 
 
 3. `pip install -r requirements.txt`

@@ -3,8 +3,9 @@ Change color, layout(?), images here.
 */
 
 body {
-	background: rgba(0, 0, 0, .4);
+	background: rgba(0, 0, 0, 0.776);
 	font-family: 'Ubuntu', sans-serif;
+	color:white
 }
 #wrapper {
 }
@@ -12,18 +13,18 @@ body {
 #homeJumbo {
 	position: relative;
 	min-height: 480px;
-	background: rgba(44, 62, 80, .8);
-	background-image: url('./img/Believe.jpg'); /* should change this image; located in img directory*/
+	background: rgba(44, 34, 34, 0.8);
+	background-image: url('./img/325232-abstract-fire.jpg'); 
 	background-size: cover;
 	background-repeat: no-repeat;
-	border-bottom: 2px solid rgba(44, 62, 80, .8);
-	box-shadow: 7px 1px 2px 2px rgba(44, 62, 80, .8);
+	border-bottom: 2px solid rgba(44, 34, 34, 0.8);
+	box-shadow: 7px 1px 2px 2px rgba(44, 34, 34, 0.8);
 }
 #homeJumbo > div.overlay {
 	position: absolute;
 	height: 183px;
 	width: 100%;
-	background: rgba(44, 62, 80, .8);
+	background: rgba(44, 34, 34, 0.8);
 }
 #homeJumbo h1 {
 	font-size: 30px;
@@ -51,7 +52,7 @@ body {
 .nav-pills>li.active>a, .nav-pills>li.active>a:hover, 
 .nav-pills>li.active>a:focus {
 	color: white;
-	border-bottom: 3px solid #2fa4e7;
+	border-bottom: 3px solid #e45416;
 	font-weight: bolder;
 	background: rgba(0, 0, 0, .4);
 }
