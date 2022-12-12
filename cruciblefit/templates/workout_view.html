@@ -28,35 +28,35 @@
     </div>
     <div class="row t20">
         <div class="col-lg-12">
-            <h4 class="text-center text-white"><strong>Existing Records ({{ log_dates|length }})</strong></h4>
+            <h4 class="text-center text-white"><strong>Existing Records ({{ meals_list|length }})</strong></h4>
         </div>
     </div>
-    {% for row in log_dates |batch(4) %} <!-- each row is a dictionary-->
+    {% for row in meals_list |batch(4) %} <!-- each row is a dictionary-->
         <div class="row t20">
-            {% for log_date in row %} <!-- for each dictionary(log_date)-->
+            {% for meal in row %} <!-- for each dictionary(meal)-->
                 <div class="col-lg-3">
                     <div class="panel panel-warning">
                         <div class="panel-body text-bold">
-                            <i class="glyphicon glyphicon-calendar"></i> {{ log_date['log_date'].date.strftime('%B %d, %Y') }}
+                            <i class="glyphicon glyphicon-calendar"></i> {{ meal['meal'].date.strftime('%B %d, %Y') }}
 
                             <a class="btn btn-primary btn-xs pull-right"
-                               href="{{ url_for('start.edit_view_meal', log_id = log_date['log_date'].id) }}">
+                               href="{{ url_for('start.edit_view_meal', meal_id = meal['meal'].id) }}">
                                 View <i class="glyphicon glyphicon-arrow-right"></i>
                             </a>
                         </div>
                         <ul class="list-group">
                             <li class="list-group-item text-bold"><span
-                                    class="badge">{{ log_date['protein'] }}</span>
+                                    class="badge">{{ meal['protein'] }}</span>
                                 Name
                             </li>
-                            <li class="list-group-item text-bold"><span class="badge">{{ log_date['carbs'] }}</span>
+                            <li class="list-group-item text-bold"><span class="badge">{{ meal['carbs'] }}</span>
                                 Type
                             </li>
-                            <li class="list-group-item text-bold"><span class="badge">{{ log_date['fats'] }}</span>
+                            <li class="list-group-item text-bold"><span class="badge">{{ meal['fats'] }}</span>
                                 Reps
                             </li>
                             <li class="list-group-item text-bold"><span
-                                    class="badge">{{ log_date['calories'] }}</span>
+                                    class="badge">{{ meal['calories'] }}</span>
                                 Sets
                             </li>
                         </ul>

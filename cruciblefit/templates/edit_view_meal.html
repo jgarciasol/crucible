@@ -16,7 +16,7 @@
         <div class="col-lg-4 col-lg-offset-4">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <form action="{{ url_for('start.add_food_to_meal', log_id = meal.id) }}" method="POST" role="form">
+                    <form action="{{ url_for('start.add_food_to_meal', meal_id = meal.id) }}" method="POST" role="form">
 
                         <div class="form-group">
                             <label>Add Food</label>
@@ -94,10 +94,10 @@
                                 <td>{{ food.fats }}</td>
                                 <td>{{ food.calories }}</td>
                                 <td>
-                                    <a href="{{ url_for('start.remove_food_from_meal', log_id = meal.id, food_id = food.id ) }}"
+                                    <a href="{{ url_for('start.remove_food_from_meal', meal_id = meal.id, food_id = food.id ) }}"
                                        class="btn btn-danger btn-xs">
-                                        {{ meal.id }} {{ food.id }} {{ food.name }}
-{#                                        <i class="glyphicon glyphicon-trash"></i> Delete#}
+{#                                        {{ meal.id }} {{ food.id }} {{ food.name }} for debugging #}
+                                        <i class="glyphicon glyphicon-trash"></i> Delete
                                     </a>
                                 </td>
                                 </tr>
@@ -113,7 +113,7 @@
         <div class="col-lg-4 col-lg-offset-4">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <a href="{{ url_for('start.meals_overview', log_id = meal.id) }}" class="btn btn-primary btn-block">
+                    <a href="{{ url_for('start.meals_overview') }}" class="btn btn-primary btn-block">
                         <i class="glyphicon glyphicon-arrow-left"></i> Done
                     </a>
                 </div>

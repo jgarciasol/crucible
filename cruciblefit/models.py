@@ -66,6 +66,15 @@ class Exercise(db.Model):
 Nutrition
 '''
 
+# Many-to-Many relationship
+# https://flask-sqlalchemy.palletsprojects.com/en/2.x/models/
+# Limitations: you can only add one food at a time. Can only add one food per day
+meal_food = db.Table('log_items',
+                     db.Column('id', db.Integer, primary_key=True),
+                     db.Column('meal_id', db.Integer, db.ForeignKey('meal.id')),
+                     db.Column('food_id', db.Integer, db.ForeignKey('food.id'))
+                     )
+
 
 class Food(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -84,20 +93,10 @@ class Food(db.Model):
         return total_calories
 
 
-# Many-to-Many relationship
-# https://flask-sqlalchemy.palletsprojects.com/en/2.x/models/
-# Limitations: you can only add one food at a time. Can only add one food per day
-meal_food_many_to_many = db.Table('log_items',
-                                  db.Column('id', db.Integer, primary_key=True),
-                                  db.Column('meal_id', db.Integer, db.ForeignKey('meal.id')),
-                                  db.Column('food_id', db.Integer, db.ForeignKey('food.id'))
-                                  )
-
-
 class Meal(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.Date, nullable=False)
-    foods = db.relationship('Food', secondary=meal_food_many_to_many, lazy='dynamic')
+    foods = db.relationship('Food', secondary=meal_food, lazy='dynamic')
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     @property
@@ -105,4 +104,25 @@ class Meal(db.Model):
         total = 0
         for item in self.foods:
             total += item.calories
+        return total
+
+    @property
+    def total_protein(self):
+        total = 0
+        for item in self.foods:
+            total += item.protein
+        return total
+
+    @property
+    def total_carbs(self):
+        total = 0
+        for item in self.foods:
+            total += item.carbs
+        return total
+
+    @property
+    def total_fats(self):
+        total = 0
+        for item in self.foods:
+            total += item.fats
         return total
