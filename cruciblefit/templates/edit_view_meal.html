@@ -2,10 +2,10 @@
 {% block title %}Crucible Fitness | Nutrition{% endblock %}
 {% block tabs %}
     <li role="presentation" class="active">
-        <a href="{{ url_for('start.add') }}" title="Add Food Item">Nutrition</a>
+        <a href="{{ url_for('start.food_items_overview') }}" title="Add Food Item">Nutrition</a>
     </li>
     <li role="presentation">
-        <a href="{{ url_for('start.index') }}" title="Home">Home</a>
+        <a href="{{ url_for('start.home') }}" title="Home">Home</a>
     </li>
     <li role="presentation">
         <a href="{{ url_for('start.fitness_view') }}" title="Add Workout">Fitness</a>
@@ -16,7 +16,7 @@
         <div class="col-lg-4 col-lg-offset-4">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <form action="{{ url_for('start.add_food_to_log', log_id = log.id) }}" method="POST" role="form">
+                    <form action="{{ url_for('start.add_food_to_meal', log_id = meal.id) }}" method="POST" role="form">
 
                         <div class="form-group">
                             <label>Add Food</label>
@@ -45,7 +45,7 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <h3 class="lean-h text-black">
-                        <i class="glyphicon glyphicon-calendar"></i> {{ log.date.strftime('%B %d, %Y') }}
+                        <i class="glyphicon glyphicon-calendar"></i> {{ meal.date.strftime('%B %d, %Y') }}
                     </h3>
 
                     <div class="row">
@@ -86,23 +86,36 @@
                         </thead>
                         <tbody>
                         <tr>
-                            {% for food in log.foods %}
-                            <td>{{ loop.index }}</td>
-                            <td>{{ food.name }}</td>
-                            <td>{{ food.protein }}</td>
-                            <td>{{ food.carbs }}</td>
-                            <td>{{ food.fats }}
-                            </th>
-                            <td>{{ food.calories }}</td>
-                            <td>
-                                <a href="{{ url_for('start.remove_food_from_log_date', log_id = log.id, food_id = food.id ) }}" class="btn btn-danger btn-xs">
-                                    <i class="glyphicon glyphicon-trash"></i> Delete
-                                </a>
-                            </td>
-                        </tr>
+                            {% for food in meal.foods %}
+                                <td>{{ loop.index }}</td>
+                                <td>{{ food.name }}</td>
+                                <td>{{ food.protein }}</td>
+                                <td>{{ food.carbs }}</td>
+                                <td>{{ food.fats }}</td>
+                                <td>{{ food.calories }}</td>
+                                <td>
+                                    <a href="{{ url_for('start.remove_food_from_meal', log_id = meal.id, food_id = food.id ) }}"
+                                       class="btn btn-danger btn-xs">
+                                        {{ meal.id }} {{ food.id }} {{ food.name }}
+{#                                        <i class="glyphicon glyphicon-trash"></i> Delete#}
+                                    </a>
+                                </td>
+                                </tr>
                             {% endfor %}
                         </tbody>
                     </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row t20">
+        <div class="col-lg-4 col-lg-offset-4">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <a href="{{ url_for('start.meals_overview', log_id = meal.id) }}" class="btn btn-primary btn-block">
+                        <i class="glyphicon glyphicon-arrow-left"></i> Done
+                    </a>
                 </div>
             </div>
         </div>

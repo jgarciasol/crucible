@@ -2,7 +2,7 @@ from flask import Blueprint, escape, redirect, url_for
 from flask import render_template, flash, request, session
 from flask_sqlalchemy import session
 from flask_login import login_user, login_required, logout_user, current_user
-from cruciblefit.models import Food, Log, Exercise, Workout
+from cruciblefit.models import Food, Meal, Exercise, Workout
 from cruciblefit.extensions import db
 from datetime import datetime
 
@@ -13,53 +13,61 @@ We will have to update this once we add more pages, such as for viewing, adding,
 '''
 
 
-@start.route('/')
+@start.route("/")
+def home():
+    if current_user.is_authenticated:
+        return redirect(url_for("start.meals_overview"))
+    return redirect(url_for("auth.login"))
+
+
+@start.route('/meals_overview')
 @login_required
-def index():
-    logs = Log.query.order_by(Log.date.desc()).all()
+def meals_overview():
+    meals = Meal.query.filter_by(user_id=current_user.id).order_by(Meal.date.desc()).all()
     log_dates = []
-    # outer loop, loops through each log date in the database
-    for log in logs:
+    # outer loop, loops through each meal date in the database
+    for meal in meals:
         protein = 0
         carbs = 0
         fats = 0
         calories = 0
-        # loop through each food in the log dates to update macro values
-        for food in log.foods:
+        # loop through each food in the meal dates to update macro values
+        for food in meal.foods:
             protein += food.protein
             carbs += food.carbs
             fats += food.fats
             calories += food.calories
-        # append to dictionary that gets send to index.html
+        # append to dictionary that gets send to meals_overview.html
+
         log_dates.append({
-            'log_date': log,
+            'log_date': meal,
             'protein': protein,
             'fats': fats,
             'carbs': carbs,
             'calories': calories
         })
-    return render_template("index.html", user=current_user, log_dates=log_dates)
+    return render_template("meals_overview.html", user=current_user, log_dates=log_dates)
 
 
-@start.route('/create_log', methods=['POST'])
+@start.route('/create_meal', methods=['POST'])
 @login_required
-##Not sure if we could use this
-def create_log():
+# Not sure if we could use this
+def create_meal():
     date = request.form.get('date')
-    log = Log(date=datetime.strptime(date, '%Y-%m-%d'))
+    log = Meal(date=datetime.strptime(date, '%Y-%m-%d'), user_id=current_user.id)
     db.session.add(log)
     db.session.commit()
-    return redirect(url_for('start.view', log_id=log.id))
+    return redirect(url_for('start.edit_view_meal', log_id=log.id))
 
 
-@start.route("/add")
+@start.route("/food_items_overview")
 @login_required
-def add():
+def food_items_overview():
     foods = Food.query.all()
-    return render_template("add.html", user=current_user, foods=foods, food=None)
+    return render_template("add_food.html", user=current_user, foods=foods, food=None)
 
 
-@start.route("/add", methods=['POST'])
+@start.route("/food_items_overview", methods=['POST'])
 @login_required
 def add_food():
     food_name = request.form.get('food-name')
@@ -86,7 +94,7 @@ def add_food():
         db.session.add(new_food)  # adds new food to db
 
     db.session.commit()
-    return redirect(url_for('start.add'))
+    return redirect(url_for('start.food_items_overview'))
 
 
 @start.route('/delete_food/<int:food_id>')
@@ -96,21 +104,21 @@ def delete_food(food_id):
     db.session.delete(food)
     db.session.commit()
 
-    return redirect(url_for('start.add'))
+    return redirect(url_for('start.food_items_overview'))
 
 
-@start.route('/edit_food/<int:food_id>')
+@start.route('/edit_food_item/<int:food_id>')
 @login_required
-def edit_food(food_id):
+def edit_food_item(food_id):
     food = Food.query.get_or_404(food_id)
     foods = Food.query.all()
-    return render_template('add.html', food=food, foods=foods)
+    return render_template('add_food.html', user=current_user, food=food, foods=foods)
 
 
-@start.route("/view/<int:log_id>")
+@start.route("/edit_view_meal/<int:log_id>")
 @login_required
-def view(log_id):
-    logs = Log.query.get_or_404(log_id)
+def edit_view_meal(log_id):
+    logs = Meal.query.get_or_404(log_id)
     foods = Food.query.all()
 
     macros_totals = {
@@ -127,31 +135,31 @@ def view(log_id):
         macros_totals['fats'] += food.fats
         macros_totals['calories'] += food.calories
 
-    return render_template("view.html", user=current_user, foods=foods, log=logs, totals=macros_totals)
+    return render_template("edit_view_meal.html", user=current_user, foods=foods, meal=logs, totals=macros_totals)
 
 
-@start.route('/add_food_to_log/<int:log_id>', methods=['POST'])
+@start.route('/add_food_to_meal/<int:log_id>', methods=['POST'])
 @login_required
-def add_food_to_log(log_id):
-    logs = Log.query.get_or_404(log_id)
+def add_food_to_meal(log_id):
+    logs = Meal.query.get_or_404(log_id)
     chosen_food = request.form.get('food-select')
     food = Food.query.get(int(chosen_food))
     logs.foods.append(food)
     db.session.commit()
-    return redirect(url_for('start.view', log_id=log_id))
+    return redirect(url_for('start.edit_view_meal', log_id=log_id))
 
 
 # remove food from particular date view
-@start.route('/remove_food_from_log_date/<int:log_id>/<int:food_id>')
+@start.route('/remove_food_from_meal/<int:log_id>/<int:food_id>')
 @login_required
-def remove_food_from_log_date(log_id, food_id):
-    log = Log.query.get(log_id)
+def remove_food_from_meal(log_id, food_id):
+    log = Meal.query.get(log_id)
     food = Food.query.get(food_id)
 
     log.foods.remove(food)
     db.session.commit()
 
-    return redirect(url_for('start.view', log_id=log_id))
+    return redirect(url_for('start.edit_view_meal', log_id=log_id))
 
 
 @start.route('/fitness')

@@ -17,6 +17,7 @@ class User(db.Model, UserMixin):
     dob = db.Column(db.Date, nullable=False, default=func.now())
     workouts = db.relationship('Workout')
     foods = db.relationship('Food')  # added
+    meals = db.relationship('Meal')
 
     @property
     def age(self):
@@ -31,9 +32,18 @@ Fitness
 class Workout(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.DateTime(timezone=True), default=func.now())
+    start_time = db.Column(db.Time)
+    end_time = db.Column(db.Time)
     data = db.Column(db.String(10000))
     exercises = db.relationship('Exercise')
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    @property
+    def total_calories(self):
+        total = 0
+        for exercise in self.exercises:
+            total += exercise.calories
+        return total
 
 
 class Exercise(db.Model):
@@ -43,6 +53,13 @@ class Exercise(db.Model):
     reps = db.Column(db.Integer, nullable=False, default=0)
     sets = db.Column(db.Integer, nullable=False, default=0)
     workout_id = db.Column(db.Integer, db.ForeignKey('workout.id'))
+
+    @property
+    def calories(self):
+        if self.type == 'cardio':
+            return self.reps * self.sets * 4
+        else:
+            return self.reps * self.sets * 2
 
 
 '''
@@ -70,13 +87,22 @@ class Food(db.Model):
 # Many-to-Many relationship
 # https://flask-sqlalchemy.palletsprojects.com/en/2.x/models/
 # Limitations: you can only add one food at a time. Can only add one food per day
-logs = db.Table('log_items',
-                db.Column('log_id', db.Integer, db.ForeignKey('log.id'), primary_key=True),
-                db.Column('food_id', db.Integer, db.ForeignKey('food.id'), primary_key=True)
-                )
+meal_food_many_to_many = db.Table('log_items',
+                                  db.Column('id', db.Integer, primary_key=True),
+                                  db.Column('meal_id', db.Integer, db.ForeignKey('meal.id')),
+                                  db.Column('food_id', db.Integer, db.ForeignKey('food.id'))
+                                  )
 
 
-class Log(db.Model):
+class Meal(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.Date, nullable=False)
-    foods = db.relationship('Food', secondary=logs, lazy='dynamic')
+    foods = db.relationship('Food', secondary=meal_food_many_to_many, lazy='dynamic')
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    @property
+    def total_calories(self):
+        total = 0
+        for item in self.foods:
+            total += item.calories
+        return total
