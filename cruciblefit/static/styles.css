@@ -5,7 +5,7 @@ Change color, layout(?), images here.
 body {
 	background: rgba(0, 0, 0, 0.776);
 	font-family: 'Ubuntu', sans-serif;
-	color:white
+	color:orange
 }
 #wrapper {
 }
