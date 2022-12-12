@@ -1,0 +1,76 @@
+{% extends "app_base.html" %}
+{% block title %}Crucible Fitness | Fitness{% endblock %}
+{% block tabs %}
+    <li role="presentation">
+        <a href="{{ url_for('start.food_items_overview') }}" title="Add Food Item">Nutrition</a>
+    </li>
+    <li role="presentation">
+        <a href="{{ url_for('start.home') }}" title="Home">Home</a>
+    </li>
+    <li role="presentation" class="active">
+        <a href="{{ url_for('start.fitness_view') }}" title="Add Workout">Fitness</a>
+    </li>
+{% endblock %}
+{% block content %}
+    <div class="row t20">
+        <div class="col-lg-4 col-lg-offset-4">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form action="{{ url_for('start.create_meal') }}" method="POST" role="form">
+
+                        <div class="form-group">
+                            <label><i class="glyphicon glyphicon-plus-sign"></i> Add New Date</label>
+                            <div class="input-group">
+                                <input type="date" class="form-control" name="date" placeholder="Select New Date"
+                                       aria-label="date"
+                                       aria-describedby="add-btn">
+                                <span class="input-group-btn">
+										<button type="submit" class="btn btn-primary" id="add-btn">
+                                            <i class="glyphicon glyphicon-plus-sign"></i> Add Date
+										</button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row t20">
+        <div class="col-lg-12">
+            <h4 class="text-center text-white"><strong>Existing Records ({{ meals_list|length }})</strong></h4>
+        </div>
+    </div>
+    {% for row in meals_list |batch(4) %} <!-- each row is a dictionary-->
+        <div class="row t20">
+            {% for meal in row %} <!-- for each dictionary(meal)-->
+                <div class="col-lg-3">
+                    <div class="panel panel-warning">
+                        <div class="panel-body text-bold">
+                            <i class="glyphicon glyphicon-calendar"></i> {{ meal['meal'].date.strftime('%B %d, %Y') }}
+
+                            <a class="btn btn-primary btn-xs pull-right"
+                               href="{{ url_for('start.edit_view_meal', meal_id = meal['meal'].id) }}">
+                                View <i class="glyphicon glyphicon-arrow-right"></i>
+                            </a>
+                        </div>
+                        <ul class="list-group">
+                            <li class="list-group-item text-bold"><span class="badge">{{ meal['protein'] }}</span>
+                                Name
+                            </li>
+                            <li class="list-group-item text-bold"><span class="badge">{{ meal['carbs'] }}</span>
+                                Type
+                            </li>
+                            <li class="list-group-item text-bold"><span class="badge">{{ meal['fats'] }}</span> Reps
+                            </li>
+                            <li class="list-group-item text-bold"><span class="badge">{{ meal['calories'] }}</span>
+                                Sets
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+{% endblock %}

@@ -29,7 +29,7 @@ body {
 #homeJumbo h1 {
 	font-size: 30px;
 	color: white;
-	font-family: 'Oswald';
+	font-family: 'Oswald', sans-serif;
 	text-align: center;
 	padding-top: 20px;
 	font-weight: bolder;

@@ -1,8 +1,8 @@
 from flask import Blueprint, escape, redirect, url_for
 from flask import render_template, flash, request, session
 from flask_sqlalchemy import session
-from flask_login import login_user, login_required, logout_user, current_user
-from cruciblefit.models import Food, Log, Exercise, Workout
+from flask_login import login_required, current_user
+from cruciblefit.models import Food, Meal, Exercise, Workout, User
 from cruciblefit.extensions import db
 from datetime import datetime
 
@@ -13,53 +13,96 @@ We will have to update this once we add more pages, such as for viewing, adding,
 '''
 
 
-@start.route('/')
+@start.route("/")
+def home():
+    if current_user.is_authenticated:
+        return redirect(url_for("start.meals_overview"))
+    return redirect(url_for("auth.login"))
+
+
+@start.route('/meals_overview')
 @login_required
-def index():
-    logs = Log.query.order_by(Log.date.desc()).all()
-    log_dates = []
-    # outer loop, loops through each log date in the database
-    for log in logs:
-        protein = 0
-        carbs = 0
-        fats = 0
-        calories = 0
-        # loop through each food in the log dates to update macro values
-        for food in log.foods:
-            protein += food.protein
-            carbs += food.carbs
-            fats += food.fats
-            calories += food.calories
-        # append to dictionary that gets send to index.html
-        log_dates.append({
-            'log_date': log,
-            'protein': protein,
-            'fats': fats,
-            'carbs': carbs,
-            'calories': calories
+def meals_overview():
+    meals = Meal.query.filter_by(user_id=current_user.id).order_by(Meal.date.desc()).all()
+    meals_list = []
+    for meal in meals:
+        # moved the total calculations for the meal to model.py
+        meals_list.append({
+            'meal': meal,
+            'protein': meal.total_protein,
+            'fats': meal.total_fats,
+            'carbs': meal.total_carbs,
+            'calories': meal.total_calories
         })
-    return render_template("index.html", user=current_user, log_dates=log_dates)
+    return render_template("meals_overview.html", user=current_user, meals_list=meals_list)
 
 
-@start.route('/create_log', methods=['POST'])
+@start.route('/create_meal', methods=['POST'])
 @login_required
-##Not sure if we could use this
-def create_log():
+# Not sure if we could use this
+def create_meal():
     date = request.form.get('date')
-    log = Log(date=datetime.strptime(date, '%Y-%m-%d'))
-    db.session.add(log)
+    meal = Meal(date=datetime.strptime(date, '%Y-%m-%d'), user_id=current_user.id)
+    db.session.add(meal)
     db.session.commit()
-    return redirect(url_for('start.view', log_id=log.id))
+    return redirect(url_for('start.edit_view_meal', meal_id=meal.id))
 
 
-@start.route("/add")
+@start.route("/edit_view_meal/<int:meal_id>")
 @login_required
-def add():
+def edit_view_meal(meal_id):
+    meal = Meal.query.get_or_404(meal_id)
+    macros_totals = {
+        'protein': 0,
+        'carbs': 0,
+        'fats': 0,
+        'calories': 0
+    }
+    food_in_meal = Meal.query.get_or_404(meal_id).foods
+    # used to calculate the nutrients for specific log date
+    for food in food_in_meal:
+        macros_totals['protein'] += food.protein
+        macros_totals['carbs'] += food.carbs
+        macros_totals['fats'] += food.fats
+        macros_totals['calories'] += food.calories
+
+    foods = Food.query.filter((Food.user_id == current_user.id) | (Food.user_id == None)).all()
+    return render_template("edit_view_meal.html", user=current_user, foods=foods, meal=meal, totals=macros_totals,
+                           food_in_meal=food_in_meal)
+
+
+@start.route('/add_food_to_meal/<int:meal_id>', methods=['POST'])
+@login_required
+def add_food_to_meal(meal_id):
+    meal = Meal.query.get_or_404(meal_id)
+    chosen_food = request.form.get('food-select')
+    food = Food.query.get(int(chosen_food))
+    meal.foods.append(food)
+    db.session.commit()
+    return redirect(url_for('start.edit_view_meal', meal_id=meal_id))
+
+
+# remove food from particular date view
+@start.route('/remove_food_from_meal/<int:meal_id>/<int:food_id>')
+@login_required
+def remove_food_from_meal(meal_id, food_id):
+    log = Meal.query.get(meal_id)
+    food = Food.query.get(food_id)
+
+    log.foods.remove(food)
+    db.session.commit()
+
+    return redirect(url_for('start.edit_view_meal', meal_id=meal_id))
+
+
+@start.route("/food_items_overview")
+@login_required
+def food_items_overview():
     foods = Food.query.all()
-    return render_template("add.html", user=current_user, foods=foods, food=None)
+    return render_template("add_food.html", user=current_user, foods=foods, food=None)
 
 
-@start.route("/add", methods=['POST'])
+@start.route("/food_items_overview", methods=['POST'])
 @login_required
 def add_food():
     food_name = request.form.get('food-name')
@@ -70,7 +113,7 @@ def add_food():
     food_id = request.form.get('food-id')
 
     # being able to edit and update values
-    if (food_id):
+    if food_id:
         # get_or_404 if id does not exist
         food = Food.query.get_or_404(food_id)
         food.name = food_name
@@ -81,12 +124,12 @@ def add_food():
     else:
         # creates new food if id does not exist
         new_food = Food(name=food_name, protein=proteins, carbs=carbs,
-                        fats=fats)
+                        fats=fats, user_id=current_user.id)
 
         db.session.add(new_food)  # adds new food to db
 
     db.session.commit()
-    return redirect(url_for('start.add'))
+    return redirect(url_for('start.food_items_overview'))
 
 
 @start.route('/delete_food/<int:food_id>')
@@ -96,68 +139,21 @@ def delete_food(food_id):
     db.session.delete(food)
     db.session.commit()
 
-    return redirect(url_for('start.add'))
+    return redirect(url_for('start.food_items_overview'))
 
 
-@start.route('/edit_food/<int:food_id>')
+@start.route('/edit_food_item/<int:food_id>')
 @login_required
-def edit_food(food_id):
+def edit_food_item(food_id):
     food = Food.query.get_or_404(food_id)
     foods = Food.query.all()
-    return render_template('add.html', food=food, foods=foods)
-
-
-@start.route("/view/<int:log_id>")
-@login_required
-def view(log_id):
-    logs = Log.query.get_or_404(log_id)
-    foods = Food.query.all()
-
-    macros_totals = {
-        'protein': 0,
-        'carbs': 0,
-        'fats': 0,
-        'calories': 0
-    }
-
-    # used to calculate the nutrients for specific log date
-    for food in logs.foods:
-        macros_totals['protein'] += food.protein
-        macros_totals['carbs'] += food.carbs
-        macros_totals['fats'] += food.fats
-        macros_totals['calories'] += food.calories
-
-    return render_template("view.html", user=current_user, foods=foods, log=logs, totals=macros_totals)
-
-
-@start.route('/add_food_to_log/<int:log_id>', methods=['POST'])
-@login_required
-def add_food_to_log(log_id):
-    logs = Log.query.get_or_404(log_id)
-    chosen_food = request.form.get('food-select')
-    food = Food.query.get(int(chosen_food))
-    logs.foods.append(food)
-    db.session.commit()
-    return redirect(url_for('start.view', log_id=log_id))
-
-
-# remove food from particular date view
-@start.route('/remove_food_from_log_date/<int:log_id>/<int:food_id>')
-@login_required
-def remove_food_from_log_date(log_id, food_id):
-    log = Log.query.get(log_id)
-    food = Food.query.get(food_id)
-
-    log.foods.remove(food)
-    db.session.commit()
-
-    return redirect(url_for('start.view', log_id=log_id))
+    return render_template('add_food.html', user=current_user, food=food, foods=foods)
 
 
 @start.route('/fitness')
 @login_required
-def fitnessView():
-    return render_template('fitnessView.html', user=current_user)
+def fitness_view():
+    return render_template('fitness_view.html', user=current_user)
 
 
 @start.route("/add_ex", methods=['POST'])
@@ -177,7 +173,7 @@ def add_ex():
         exercise.sets = ex_sets
     else:
         new_workout = Workout(name=ex_name, type=ex_type, reps=ex_reps,
-                        sets=ex_sets)
+                              sets=ex_sets)
 
         db.session.add(new_workout)
 

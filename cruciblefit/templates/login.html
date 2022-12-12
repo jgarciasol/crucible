@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "auth_base.html" %}
 {% block title %}Login{% endblock %}
 {% block content %}
     <form method="POST">
@@ -24,37 +24,4 @@
         <button type="submit" class="btn btn-primary">Login</button>
     </form>
 {% endblock %}
-
-{#
-<!--
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Flask Intro - login page</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="static/bootstrap.min.css" rel="stylesheet" media="screen">
-  </head>
-  <body>
-    <div class="container">
-      <b><center>Welcome to the Crucible Fitness, Nutrition and Social App</center></b>
-      <center>Please login</center>
-      img{ <img src="img/Cruciblelogo.jpg" alt="Crucible Logo" style="width:300px;height:300px;">
-      }
-      <br>
-      <form action="" method="post">
-        <input type="text" placeholder="Username" name="username" value="{{
-          request.form.username }}">
-         <input type="password" placeholder="Password" name="password" value="{{
-          request.form.password }}">
-        <input class="btn btn-default" type="submit" value="Login">
-      </form>
-      <p class="bottom">Don't Have an Account? <a class="bottom" href="{url_for('register_html')}}"> Sign Up here</a></p>
-      {% if error %}
-        <p class="error"><strong>Error:</strong> {{ error }}
-      {% endif %}
-    </div>
-  </body>
-</html>
--->
-#}
 

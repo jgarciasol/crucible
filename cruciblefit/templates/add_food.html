@@ -1,0 +1,125 @@
+{% extends "app_base.html" %}
+{% block title %}Crucible Fitness | Nutrition{% endblock %}
+{% block tabs %}
+    <li role="presentation" class="active">
+        <a href="{{ url_for('start.food_items_overview') }}" title="Add Food Item">Nutrition</a>
+    </li>
+    <li role="presentation">
+        <a href="{{ url_for('start.home') }}" title="Home">Home</a>
+    </li>
+    <li role="presentation">
+        <a href="{{ url_for('start.fitness_view') }}" title="Add Workout">Fitness</a>
+    </li>
+{% endblock %}
+{% block content %}
+    <div class="row t20">
+        <div class="col-lg-8 col-lg-offset-2">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h3 class="lean-h text-black">
+                        <i class="glyphicon glyphicon-plus-sign"></i> Add New Food Item
+                    </h3>
+                    <hr/>
+
+                    <form action="{{ url_for('start.food_items_overview') }}" method="POST" role="form">
+
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="food-name">Food Name</label>
+                                    <input type="text" class="form-control" id="food-name" name="food-name"
+                                           placeholder="Food Name" value="{{ food.name }}" autofocus>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="protein">Protein</label>
+                                    <input type="number" class="form-control" id="protein" name="protein"
+                                           placeholder="Protein" value="{{ food.protein }}">
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="carbohydrates">Carbohydrates</label>
+                                    <input type="number" class="form-control" id="carbohydrates" name="carbohydrates"
+                                           placeholder="Carbohydrates" value="{{ food.carbs }}">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="fat">Fat</label>
+                                    <input type="number" class="form-control" id="fat" name="fat" placeholder="Fat"
+                                           value="{{ food.carbs }}">
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label style="visibility:hidden">submit</label>
+                                    <input type="hidden" name="food-id" value="{{ food.id }}">
+                                    <button type="submit" class="btn btn-primary btn-block">
+                                        <i class="glyphicon glyphicon-upload"></i> Submit
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row t20">
+        <div class="col-lg-8 col-lg-offset-2">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h4 class="lean-h text-black">
+                        <i class="glyphicon glyphicon-th-list"></i> Existing Food Items
+                    </h4>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover table-bordered">
+                        <thead>
+                        <tr>
+                            <th style="width: 5%;">#</th>
+                            <th>Name</th>
+                            <th style="width: 10%;">Protein</th>
+                            <th style="width: 16%;">Carbohydrates</th>
+                            <th style="width: 10%;">Fat</th>
+                            <th style="width: 12%;">Calories</th>
+                            <th style="width: 20%;">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for food in foods %}
+                            <tr>
+                                <td>{{ food.id }}</td>
+                                <td>{{ food.name }}</td>
+                                <td>{{ food.protein }}</td>
+                                <td>{{ food.carbs }}</td>
+                                <td>{{ food.fats }}
+                                </th>
+                                <td>{{ food.calories }}</td>
+                                <td>
+                                    <a href="{{ url_for('start.edit_food_item', food_id=food.id) }}"
+                                       class="btn btn-default btn-xs">
+                                        <i class="glyphicon glyphicon-pencil"></i> Edit
+                                    </a>
+                                    <a href="{{ url_for('start.delete_food', food_id=food.id) }}"
+                                       class="btn btn-danger btn-xs">
+                                        <i class="glyphicon glyphicon-trash"></i> Delete
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

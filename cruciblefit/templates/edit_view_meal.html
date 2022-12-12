@@ -1,0 +1,123 @@
+{% extends "app_base.html" %}
+{% block title %}Crucible Fitness | Nutrition{% endblock %}
+{% block tabs %}
+    <li role="presentation" class="active">
+        <a href="{{ url_for('start.food_items_overview') }}" title="Add Food Item">Nutrition</a>
+    </li>
+    <li role="presentation">
+        <a href="{{ url_for('start.home') }}" title="Home">Home</a>
+    </li>
+    <li role="presentation">
+        <a href="{{ url_for('start.fitness_view') }}" title="Add Workout">Fitness</a>
+    </li>
+{% endblock %}
+{% block content %}
+    <div class="row t20">
+        <div class="col-lg-4 col-lg-offset-4">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form action="{{ url_for('start.add_food_to_meal', meal_id = meal.id) }}" method="POST" role="form">
+
+                        <div class="form-group">
+                            <label>Add Food</label>
+                            <div class="input-group">
+                                <select class="form-control" name="food-select">
+                                    {% for food in foods %}
+                                        <option value="{{ food.id }}">{{ food.name }}</option>
+                                    {% endfor %}
+                                </select>
+                                <span class="input-group-btn">
+										<button type="submit" class="btn btn-primary" id="add-btn">
+										  <i class="glyphicon glyphicon-plus-sign"></i> Add Food
+										</button>
+									  </span>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row t20">
+        <div class="col-lg-8 col-lg-offset-2">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h3 class="lean-h text-black">
+                        <i class="glyphicon glyphicon-calendar"></i> {{ meal.date.strftime('%B %d, %Y') }}
+                    </h3>
+
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <h4 class="lean-h">
+                                Protein: &nbsp;<strong class="f25">{{ totals['protein'] }}</strong>
+                            </h4>
+                        </div>
+                        <div class="col-lg-3">
+                            <h4 class="lean-h">
+                                Carbohydrates: <strong class="f25">{{ totals['carbs'] }}</strong>
+                            </h4>
+                        </div>
+                        <div class="col-lg-3">
+                            <h4 class="lean-h">
+                                Fat: <strong class="f25">{{ totals['fats'] }}</strong>
+                            </h4>
+                        </div>
+                        <div class="col-lg-3">
+                            <h4 class="lean-h">
+                                Calories: <strong class="f25">{{ totals['calories'] }}</strong>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover table-bordered">
+                        <thead>
+                        <tr>
+                            <th style="width: 5%;">#</th>
+                            <th>Name</th>
+                            <th style="width: 10%;">Protein</th>
+                            <th style="width: 16%;">Carbohydrates</th>
+                            <th style="width: 10%;">Fat</th>
+                            <th style="width: 12%;">Calories</th>
+                            <th style="width: 20%;">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            {% for food in meal.foods %}
+                                <td>{{ loop.index }}</td>
+                                <td>{{ food.name }}</td>
+                                <td>{{ food.protein }}</td>
+                                <td>{{ food.carbs }}</td>
+                                <td>{{ food.fats }}</td>
+                                <td>{{ food.calories }}</td>
+                                <td>
+                                    <a href="{{ url_for('start.remove_food_from_meal', meal_id = meal.id, food_id = food.id ) }}"
+                                       class="btn btn-danger btn-xs">
+{#                                        {{ meal.id }} {{ food.id }} {{ food.name }} for debugging #}
+                                        <i class="glyphicon glyphicon-trash"></i> Delete
+                                    </a>
+                                </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row t20">
+        <div class="col-lg-4 col-lg-offset-4">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <a href="{{ url_for('start.meals_overview') }}" class="btn btn-primary btn-block">
+                        <i class="glyphicon glyphicon-arrow-left"></i> Done
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
