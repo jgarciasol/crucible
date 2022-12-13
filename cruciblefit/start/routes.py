@@ -4,7 +4,7 @@ from flask_sqlalchemy import session
 from flask_login import login_required, current_user
 from cruciblefit.models import Food, Meal, Exercise, Workout, User, MealFood
 from cruciblefit.extensions import db
-from datetime import datetime
+from datetime import datetime, timedelta
 
 start = Blueprint("start", __name__)
 
@@ -15,9 +15,7 @@ We will have to update this once we add more pages, such as for viewing, adding,
 
 @start.route("/")
 def home():
-    if current_user.is_authenticated:
-        return redirect(url_for("start.meals_overview"))
-    return redirect(url_for("auth.login"))
+    return render_template("home.html", user=current_user)
 
 
 @start.route('/meals_overview')
@@ -72,7 +70,6 @@ def add_food_to_meal(meal_id):
     return redirect(url_for('start.edit_view_meal', meal_id=meal_id))
 
 
-# remove food from particular date view
 @start.route('/remove_food_from_meal/<int:meal_id>/<int:meal_food_id>')
 @login_required
 def remove_food_from_meal(meal_id, meal_food_id):
@@ -140,18 +137,79 @@ def edit_food_item(food_id):
 
 @start.route('/fitness')
 @login_required
-def fitness_view():
-    return render_template('fitness_view.html', user=current_user)
+def fitness_overview():
+    workouts = Workout.query.filter_by(user_id=current_user.id).order_by(Workout.date.desc(),
+                                                                         Workout.start_time.desc()).all()
+    # workouts_list = []
+    # for workout in workouts:
+    #     # moved the total calculations for the meal to model.py
+    #     workouts_list.append({
+    #         'workout': workout,
+    #         'cals_burned': workout.total_calories
+    #     })
+    return render_template("fitness_overview.html", user=current_user, workouts_list=workouts)
 
 
-@start.route('/fitness', methods=['POST'])
+# @start.route('/fitness', methods=['POST'])
+# @login_required
+# def add_prior_workout():
+#     time = datetime.now() + timedelta(hours=1)
+#     workout = Workout(date=datetime.now().date(), start_time=datetime.now().time(), end_time=time.time(),
+#                       user_id=current_user.id)
+#     db.session.add(workout)
+#     db.session.commit()
+#     return redirect(url_for('start.view_workout_record', workout_id=workout.id))
+
+
+@start.route('/view_workout_record/<int:workout_id>')
 @login_required
-def add_prior_workout():
-    date = request.form.get('date')
-    workout = Workout(date=datetime.strptime(date, '%Y-%m-%d'), user_id=current_user.id)
-    db.session.add(workout)
+def view_workout_record(workout_id):
+    if workout_id == 0:
+        time = datetime.now() + timedelta(hours=1)
+        workout = Workout(date=datetime.now().date(), start_time=datetime.now().time(), end_time=time.time(),
+                          user_id=current_user.id)
+        db.session.add(workout)
+
+        db.session.commit()
+    else:
+        workout = Workout.query.get_or_404(workout_id)
+    workout_info = {
+        'workout': workout,
+        'id': workout.id,
+        'date': workout.date,
+        'start_time': workout.start_time,
+        'end_time': workout.end_time,
+        'workout_notes': workout.workout_notes
+    }
+    return render_template("view_workout_record.html", user=current_user, workout_id=workout.id,
+                           workout_info=workout_info)
+
+
+@start.route('/edit_workout_record/<int:workout_id>', methods=['POST'])
+@login_required
+def edit_workout_record(workout_id):
+    workout = Workout.query.get_or_404(workout_id)
+    workout.start_time = request.form.get('start-time')
+    workout.end_time = request.form.get('end-time')
+    workout.date = request.form.get('date')
+    workout.notes = request.form.get('notes')
     db.session.commit()
-    return redirect(url_for('start.edit_view_meal', workout_id=workout.id))
+    return redirect(url_for('start.view_workout_record', workout_id=workout.id))
+
+
+@start.route('/remove_food_from_meal/<int:workout_exercise_id>/<int:workout_id>')
+@login_required
+def remove_exercise_from_workout(workout_exercise_id, workout_id):
+    workout = Meal.query.get(workout_id)
+    workout.remove_food(workout_exercise_id)
+    db.session.commit()
+    return redirect(url_for('start.view_workout_record', workout=workout))
+
+
+@start.route('/pre_workout')
+@login_required
+def pre_workout():
+    return render_template('pre_workout.html', user=current_user)
 
 
 @start.route("/add_ex", methods=['POST'])

@@ -1,14 +1,14 @@
 {% extends "app_base.html" %}
 {% block title %}Crucible Fitness | Home{% endblock %}
 {% block tabs %}
-    <li role="presentation">
+    <li role="presentation" class="active">
         <a href="{{ url_for('start.food_items_overview') }}" title="Add Food Item">Nutrition</a>
     </li>
-    <li role="presentation" class="active">
+    <li role="presentation">
         <a href="{{ url_for('start.home') }}" title="Home">Home</a>
     </li>
     <li role="presentation">
-        <a href="{{ url_for('start.fitness_view') }}" title="View Workouts">Fitness</a>
+        <a href="{{ url_for('start.fitness_overview') }}" title="View Workouts">Fitness</a>
     </li>
 {% endblock %}
 {% block content %}

@@ -36,6 +36,26 @@ class WorkoutExercise(db.Model):
     workout_id = db.Column(db.Integer, db.ForeignKey('workout.id'))
     exercise = db.relationship('Exercise', back_populates='workouts_link')
     exercise_id = db.Column(db.Integer, db.ForeignKey('exercise.id'))
+    notes = db.Column(db.String(150), nullable=True)
+    sets = db.Column(db.Integer, nullable=True)
+    reps = db.Column(db.Integer, nullable=True)
+    weight = db.Column(db.Integer, nullable=True)  # stored as pounds
+    distance = db.Column(db.Float, nullable=True)  # stored as miles
+
+    # TODO: implement cals burned (research how to calculate cals burned)
+    @property
+    def cals_burned(self):
+        """
+        Calculates the calories burned for a given exercise
+        :return: (Integer) Calories burned
+        """
+        cals = int(self.exercise.cals_burned_per_rep * self.sets * self.reps)
+        if self.exercise.type == 'cardio':
+            return int(cals * self.distance)
+        elif self.exercise.type == 'weight':
+            return int(cals * self.weight)
+        elif self.exercise.type == 'bodyweight':
+            return int(cals * self.workout.user.weight)
 
 
 class Workout(db.Model):
@@ -45,21 +65,27 @@ class Workout(db.Model):
     date = db.Column(db.DateTime(timezone=True), default=func.now())
     start_time = db.Column(db.Time)
     end_time = db.Column(db.Time)
-    data = db.Column(db.String(10000))
+    workout_notes = db.Column(db.String(10000))
 
+    # TODO: implement get_workout_info property
     @property
-    def get_exercises(self):
+    def get_workout_info(self):
+        """
+        Returns a list of tuples containing exercise and in the workout
+        :return:
+        """
         exercises = []
         for item in self.exercises_link:
             if item.exercise:
-                exercises.append([item.exercise, item.id])
+                exercises.append([item.exercise, item])
             else:
                 db.session.delete(item)
                 db.session.commit()
         return exercises
 
-    def add_exercise(self, exercise_id):
-        self.exercises_link.append(WorkoutExercise(exercise_id=exercise_id))
+    # TODO: implement add_exercise method
+    def add_exercise(self, workout_exercise):
+        self.exercises_link.append(workout_exercise)
         db.session.commit()
 
     def remove_exercise(self, workout_exercise_id):
@@ -84,7 +110,15 @@ class Workout(db.Model):
     def total_cals_burned(self):
         total = 0
         for exercise in self.exercises_link:
-            total += exercise.calories
+            total += exercise.cals_burned
+        return total
+
+    @property
+    def total_weight(self):
+        total = 0
+        for exercise_info in self.exercises_link:
+            if exercise_info.weight:
+                total += exercise_info.weight
         return total
 
 
@@ -92,18 +126,40 @@ class Exercise(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     workouts_link = db.relationship('WorkoutExercise', back_populates='exercise', lazy='dynamic')
-    name = db.Column(db.String(50), unique=True, nullable=False)
-    type = db.Column(db.String(50), nullable=True, default='cardio')
-    sets = db.Column(db.Integer, nullable=False, default=0)
-    reps = db.Column(db.Integer, nullable=False, default=0)
-    weight = db.Column(db.Integer, nullable=False, default=0)
+    name = db.Column(db.String(50), nullable=False)
+    type = db.Column(db.String(50), nullable=True, default='other')
+    exercise_note = db.Column(db.String(1000), nullable=True)
+    rest_time = db.Column(db.Integer, nullable=True, default=0)
 
+    # TODO: implement cals_burned_per_rep property
     @property
-    def cals_burned(self):
+    def cals_burned_per_rep(self):
+        """
+        Calculates the calories burned per rep or mile for this exercise
+        :return: (Integer) Calories burned per rep
+        """
         if self.type == 'cardio':
-            return self.reps * self.sets * 4
+            return 100
+        elif self.type == 'weight':
+            return 0.02
+        elif self.type == 'bodyweight':
+            return 0.002
+        elif self.type == 'warmup':
+            return 0.001
         else:
-            return self.reps * self.sets * 2
+            return 0.01
+
+    def personal_record(self, user_id):
+        """
+        Returns the personal record for the user in this exercise
+        :param user_id: User.ID of the user
+        :return: (Integer) personal record
+        """
+        personal_record = 0
+        for workout in self.workouts_link:
+            if workout.user_id == user_id and workout.weight > personal_record:
+                personal_record = workout.weight
+        return personal_record
 
 
 '''

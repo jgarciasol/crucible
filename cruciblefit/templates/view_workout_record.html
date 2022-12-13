@@ -1,0 +1,156 @@
+{% extends "app_base.html" %}
+{% block title %}Crucible Fitness | Nutrition{% endblock %}
+{% block tabs %}
+    <li role="presentation">
+        <a href="{{ url_for('start.food_items_overview') }}" title="Add Food Item">Nutrition</a>
+    </li>
+    <li role="presentation">
+        <a href="{{ url_for('start.home') }}" title="Home">Home</a>
+    </li>
+    <li role="presentation" class="active">
+        <a href="{{ url_for('start.fitness_overview') }}" title="View Workouts">Fitness</a>
+    </li>
+{% endblock %}
+{% block content %}
+    <div class="row t20">
+        <div class="col-lg-8 col-lg-offset-2">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h3 class="lean-h text-black">
+                        <i class="glyphicon glyphicon-cog"></i> Edit Workout
+                    </h3>
+                    <hr/>
+
+                    <form action="{{ url_for('start.fitness_overview') }}" method="POST" role="form">
+
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="date">Date</label>
+                                    <input type="date" class="form-control" id="date" name="date" required
+                                           value="{{ workout_info['date'] }}" autofocus>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="start-time">Start Time</label>
+                                    <input type="time" class="form-control" id="start-time" name="start-time" required
+                                           value="{{ workout_info['start_time'] }}">
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="end-time">End Time</label>
+                                    <input type="time" class="form-control" id="end-time" name="end-time" required
+                                           value="{{ workout_info['end_time'] }}">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="workout-notes">Workout Notes</label>
+                                    <input type="text" class="form-control" id="workout-notes" name="workout-notes" placeholder="{{ workout_info['workout_notes'] }}"
+                                           value="{{ workout_info['workout_notes'] }}">
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label style="visibility:hidden">submit</label>
+                                    <input type="hidden" name="workout-id" value="{{ workout_info['id'] }}">
+                                    <button type="submit" class="btn btn-primary btn-block">
+                                        <i class="glyphicon glyphicon-upload"></i> Done
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row t20">
+        <div class="col-lg-8 col-lg-offset-2">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h3 class="lean-h text-black">
+                        <i class="glyphicon glyphicon-calendar"></i> {{ workout_info['date'].strftime('%B %d, %Y') }}
+                    </h3>
+{#TODO: Add totals of workout here#}
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <h4 class="lean-h">
+                                Protein: <strong class="f25">{# {{ totals['protein'] }} #}</strong>
+                            </h4>
+                        </div>
+                        <div class="col-lg-3">
+                            <h4 class="lean-h">
+                                Carbohydrates: <strong class="f25">{# {{ totals['carbs'] }} #}</strong>
+                            </h4>
+                        </div>
+                        <div class="col-lg-3">
+                            <h4 class="lean-h">
+                                Fat: <strong class="f25">{# {{ totals['fats'] }} #}</strong>
+                            </h4>
+                        </div>
+                        <div class="col-lg-3">
+                            <h4 class="lean-h">
+                                Calories: <strong class="f25">{# {{ totals['cals'] }} #}</strong>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+{#TODO: Add boxes to hold individual exercises#}
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover table-bordered">
+                        <thead>
+                        <tr>
+                            <th style="width: 5%;">#</th>
+                            <th>kind</th>
+                            <th style="width: 10%;">Exercise</th>
+                            <th style="width: 16%;">reps</th>
+                            <th style="width: 10%;">weight</th>
+                            <th style="width: 12%;">Calories</th>
+                            <th style="width: 20%;">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            {% for item in workout_info['workout'].exersize_link %}
+                                <td>{{ loop.index }}</td>
+                                <td>{{ item.exercise.name }}</td>
+                                <td>{{ item.exercise.name }}</td>
+                                <td>{{ item.exercise.name }}</td>
+                                <td>{{ item.exercise.name }}</td>
+                                <td>{{ item.exercise.name }}</td>
+                                <td>
+                                    <a href="{{ url_for('start.remove_exercise_from_workout', workout_exercise_id = item.id, workout_id = workout_info['id'] ) }}"
+                                       class="btn btn-danger btn-xs">
+                                        {# {{ meal.id }} {{ food.id }} {{ food.name }} for debugging #}
+                                        <i class="glyphicon glyphicon-trash"></i> Delete
+                                    </a>
+                                </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row t20">
+        <div class="col-lg-4 col-lg-offset-4">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <a href="{{ url_for('start.fitness_overview') }}" class="btn btn-primary btn-block">
+                        <i class="glyphicon glyphicon-arrow-left"></i> Done
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

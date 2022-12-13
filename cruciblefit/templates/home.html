@@ -1,0 +1,59 @@
+{% extends "app_base.html" %}
+{% block title %}Crucible Fitness | Fitness{% endblock %}
+{% block tabs %}
+    <li role="presentation">
+        <a href="{{ url_for('start.food_items_overview') }}" title="Add Food Item">Nutrition</a>
+    </li>
+    <li role="presentation" class="active">
+        <a href="{{ url_for('start.home') }}" title="Home">Home</a>
+    </li>
+    <li role="presentation">
+        <a href="{{ url_for('start.fitness_overview') }}" title="View Workouts">Fitness</a>
+    </li>
+{% endblock %}
+{% block content %}
+    <div class="row t20">
+        <div class="col-lg-4 col-lg-offset-4">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <a href="{{ url_for('start.pre_workout') }}" class="btn btn-primary btn-block">
+                        <i class="glyphicon glyphicon-arrow-left"></i> Start New Workout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row t20">
+        <div class="col-lg-4 col-lg-offset-4">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <a href="{{ url_for('start.fitness_overview') }}" class="btn btn-primary btn-block">
+                        <i class="glyphicon glyphicon-arrow-left"></i> View Workouts
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row t20">
+        <div class="col-lg-4 col-lg-offset-4">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <a href="{{ url_for('start.meals_overview') }}" class="btn btn-primary btn-block">
+                        <i class="glyphicon glyphicon-arrow-left"></i> Enter New Meal
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row t20">
+        <div class="col-lg-4 col-lg-offset-4">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <a href="{{ url_for('start.meals_overview') }}" class="btn btn-primary btn-block">
+                        <i class="glyphicon glyphicon-arrow-left"></i> View Recorded Meals
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
