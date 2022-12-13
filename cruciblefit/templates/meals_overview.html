@@ -8,7 +8,7 @@
         <a href="{{ url_for('start.home') }}" title="Home">Home</a>
     </li>
     <li role="presentation">
-        <a href="{{ url_for('start.fitness_view') }}" title="Add Workout">Fitness</a>
+        <a href="{{ url_for('start.fitness_view') }}" title="View Workouts">Fitness</a>
     </li>
 {% endblock %}
 {% block content %}
@@ -19,7 +19,7 @@
                     <form action="{{ url_for('start.create_meal') }}" method="POST" role="form">
 
                         <div class="form-group">
-                            <label><i class="glyphicon glyphicon-plus-sign"></i> Add New Date</label>
+                            <label><i class="glyphicon glyphicon-plus-sign"></i> Add New Meal</label>
                             <div class="input-group">
                                 <input type="date" class="form-control" name="date" placeholder="Select New Date"
                                        aria-label="date"
@@ -39,10 +39,10 @@
 
     <div class="row t20">
         <div class="col-lg-12">
-            <h4 class="text-center text-white"><strong>Existing Records ({{ meals_list|length }})</strong></h4>
+            <h4 class="text-center text-white"><strong>Recorded Meals: {{ meals_list|length }}</strong></h4>
         </div>
     </div>
-    {% for row in meals_list |batch(4) %} <!-- each row is a dictionary-->
+    {% for row in meals_list|batch(4) %} <!-- each row is a dictionary-->
         <div class="row t20">
             {% for meal in row %} <!-- for each dictionary(meal)-->
                 <div class="col-lg-3">

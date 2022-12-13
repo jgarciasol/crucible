@@ -3,85 +3,100 @@ Change color, layout(?), images here.
 */
 
 body {
-	background: rgba(0, 0, 0, 0.776);
-	font-family: 'Ubuntu', sans-serif;
-	color:orange
+    background: rgb(32, 32, 32);
+    font-family: 'Ubuntu', sans-serif;
+    color: #e15322
 }
+
 #wrapper {
 }
 
 #homeJumbo {
-	position: relative;
-	min-height: 480px;
-	background: rgba(44, 34, 34, 0.8);
-	background-image: url('./img/325232-abstract-fire.jpg'); 
-	background-size: cover;
-	background-repeat: no-repeat;
-	border-bottom: 2px solid rgba(44, 34, 34, 0.8);
-	box-shadow: 7px 1px 2px 2px rgba(44, 34, 34, 0.8);
+    position: relative;
+    min-height: 350px;
+    background: rgb(57, 57, 57);
+    background-image: url('./img/325232-abstract-fire.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-bottom: 2px solid rgba(44, 34, 34, 0.8);
+    box-shadow: 7px 1px 2px 2px rgba(44, 34, 34, 0.8);
 }
+
 #homeJumbo > div.overlay {
-	position: absolute;
-	height: 183px;
-	width: 100%;
-	background: rgba(44, 34, 34, 0.8);
+    position: absolute;
+    height: 183px;
+    width: 100%;
+    background: rgba(57, 57, 57, 0.8);
 }
+
 #homeJumbo h1 {
-	font-size: 30px;
-	color: white;
-	font-family: 'Oswald', sans-serif;
-	text-align: center;
-	padding-top: 20px;
-	font-weight: bolder;
+    font-size: 30px;
+    color: white;
+    font-family: 'Oswald', sans-serif;
+    text-align: center;
+    padding-top: 20px;
+    font-weight: bolder;
 }
+
 #homeJumbo h1 > a {
-	color: white;
-	text-decoration: none;
+    color: white;
+    text-decoration: none;
 }
 
 .t10 {
-	margin-top: 10px;
-}
-.t20 {
-	margin-top: 20px;
-}
-.f25 {
-	font-size: 25px;
+    margin-top: 10px;
 }
 
-.nav-pills>li.active>a, .nav-pills>li.active>a:hover, 
-.nav-pills>li.active>a:focus {
-	color: white;
-	border-bottom: 3px solid #e45416;
-	font-weight: bolder;
-	background: rgba(0, 0, 0, .4);
+.t20 {
+    margin-top: 20px;
 }
-.nav-justified>li>a {
-	color: white;
-	font-weight: bolder;
+
+.f25 {
+    font-size: 25px;
 }
-.nav>li>a:hover, .nav>li>a:focus {
-	background: rgba(0, 0, 0, .4);
+
+.nav-pills > li.active > a, .nav-pills > li.active > a:hover,
+.nav-pills > li.active > a:focus {
+    color: white;
+    border-bottom: 3px solid #e45416;
+    font-weight: bolder;
+    background: rgba(0, 0, 0, .4);
 }
-.nav-pills>li+li {
-	padding-left: 10px;
+
+.nav-justified > li > a {
+    color: white;
+    font-weight: bolder;
 }
+
+.nav > li > a:hover, .nav > li > a:focus {
+    background: rgba(0, 0, 0, .4);
+}
+
+.nav-pills > li + li {
+    padding-left: 10px;
+}
+
 .text-bold {
-	font-weight: bolder !important;
+    font-weight: bolder !important;
 }
+
 .lean-h {
-	margin-top: 5px;
-	margin-bottom: 10px;
-	font-weight: bolder;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    font-weight: bolder;
 }
+
 .text-black {
-	color: black !important;
+    color: black !important;
 }
+
 .text-white {
-	color: white !important;
+    color: white !important;
 }
+
 footer {
-	margin-top: 20px;
-	color: black;
-	margin-bottom: 20px;
+    margin-top: 20px;
+    color: black;
+    margin-bottom: 20px;
 }

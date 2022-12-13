@@ -8,7 +8,7 @@
         <a href="{{ url_for('start.home') }}" title="Home">Home</a>
     </li>
     <li role="presentation">
-        <a href="{{ url_for('start.fitness_view') }}" title="Add Workout">Fitness</a>
+        <a href="{{ url_for('start.fitness_view') }}" title="View Workouts">Fitness</a>
     </li>
 {% endblock %}
 {% block content %}
@@ -27,21 +27,21 @@
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label for="food-name">Food Name</label>
-                                    <input type="text" class="form-control" id="food-name" name="food-name"
+                                    <input type="text" class="form-control" id="food-name" name="food-name" required
                                            placeholder="Food Name" value="{{ food.name }}" autofocus>
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label for="protein">Protein</label>
-                                    <input type="number" class="form-control" id="protein" name="protein"
+                                    <input type="number" class="form-control" id="protein" name="protein" required
                                            placeholder="Protein" value="{{ food.protein }}">
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label for="carbohydrates">Carbohydrates</label>
-                                    <input type="number" class="form-control" id="carbohydrates" name="carbohydrates"
+                                    <input type="number" class="form-control" id="carbohydrates" name="carbohydrates" required
                                            placeholder="Carbohydrates" value="{{ food.carbs }}">
                                 </div>
                             </div>
@@ -51,7 +51,7 @@
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label for="fat">Fat</label>
-                                    <input type="number" class="form-control" id="fat" name="fat" placeholder="Fat"
+                                    <input type="number" class="form-control" id="fat" name="fat" placeholder="Fat" required
                                            value="{{ food.carbs }}">
                                 </div>
                             </div>

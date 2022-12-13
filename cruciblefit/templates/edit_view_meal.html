@@ -8,7 +8,7 @@
         <a href="{{ url_for('start.home') }}" title="Home">Home</a>
     </li>
     <li role="presentation">
-        <a href="{{ url_for('start.fitness_view') }}" title="Add Workout">Fitness</a>
+        <a href="{{ url_for('start.fitness_view') }}" title="View Workouts">Fitness</a>
     </li>
 {% endblock %}
 {% block content %}
@@ -86,7 +86,7 @@
                         </thead>
                         <tbody>
                         <tr>
-                            {% for food in meal.foods %}
+                            {% for food, meal_food_id in meal.get_food_items %}
                                 <td>{{ loop.index }}</td>
                                 <td>{{ food.name }}</td>
                                 <td>{{ food.protein }}</td>
@@ -94,9 +94,9 @@
                                 <td>{{ food.fats }}</td>
                                 <td>{{ food.calories }}</td>
                                 <td>
-                                    <a href="{{ url_for('start.remove_food_from_meal', meal_id = meal.id, food_id = food.id ) }}"
+                                    <a href="{{ url_for('start.remove_food_from_meal', meal_id = meal.id, meal_food_id = meal_food_id ) }}"
                                        class="btn btn-danger btn-xs">
-{#                                        {{ meal.id }} {{ food.id }} {{ food.name }} for debugging #}
+                                        {# {{ meal.id }} {{ food.id }} {{ food.name }} for debugging #}
                                         <i class="glyphicon glyphicon-trash"></i> Delete
                                     </a>
                                 </td>
