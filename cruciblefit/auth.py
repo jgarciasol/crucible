@@ -46,8 +46,10 @@ def sign_up():
         new_dob = request.form.get('dob')
         new_password1 = request.form.get('password1')
         password2 = request.form.get('password2')
-
-        new_dob = datetime.strptime(new_dob, '%Y-%m-%d')
+        try:
+            new_dob = datetime.strptime(new_dob, '%Y-%m-%d')
+        except ValueError as exception:
+            flash('Try inserting correct date', category='error')
         user = User.query.filter_by(email=new_email).first()
         if user:
             flash('Email already exists.', category='error')
