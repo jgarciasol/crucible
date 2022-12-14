@@ -34,14 +34,14 @@
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label for="protein">Protein</label>
-                                    <input type="number" class="form-control" id="protein" name="protein" required
+                                    <input type="number" min = "1" step = "1" class="form-control" id="protein" name="protein" required
                                            placeholder="Protein" value="{{ food.protein }}">
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label for="carbohydrates">Carbohydrates</label>
-                                    <input type="number" class="form-control" id="carbohydrates" name="carbohydrates" required
+                                    <input type="number" min = "1" step = "1" class="form-control" id="carbohydrates" name="carbohydrates" required
                                            placeholder="Carbohydrates" value="{{ food.carbs }}">
                                 </div>
                             </div>
@@ -51,7 +51,7 @@
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label for="fat">Fat</label>
-                                    <input type="number" class="form-control" id="fat" name="fat" placeholder="Fat" required
+                                    <input type="number" min = "1" step = "1" class="form-control" id="fat" name="fat" placeholder="Fat" required
                                            value="{{ food.carbs }}">
                                 </div>
                             </div>
