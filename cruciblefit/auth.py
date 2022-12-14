@@ -61,6 +61,10 @@ def sign_up():
             flash('Passwords don\'t match.', category='error')
         elif len(new_password1) < 7:
             flash('Password must be at least 7 characters.', category='error')
+        elif int(new_weight) < 0:
+            flash('Must be positive.', category='error')
+        elif int(new_height) < 0:
+            flash('Must be positive.', category='error')
         else:
             new_user = User(email=new_email, first_name=new_first_name, password=generate_password_hash(
                 new_password1, method='sha256'), weight=new_weight, height=new_height, dob=new_dob)
