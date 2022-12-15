@@ -15,7 +15,7 @@ def create_app():
     app.register_blueprint(start)
     app.register_blueprint(auth)
 
-    from . import models    #do not delete or move this, it is needed for the database to load properly
+    from . import models  # do not delete or move this, it is needed for the database to load properly
 
     with app.app_context():
         db.create_all()

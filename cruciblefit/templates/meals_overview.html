@@ -2,7 +2,7 @@
 {% block title %}Crucible Fitness | Home{% endblock %}
 {% block tabs %}
     <li role="presentation" class="active">
-        <a href="{{ url_for('start.food_items_overview') }}" title="Add Food Item">Nutrition</a>
+        <a href="{{ url_for('start.meals_overview') }}" title="View Meals">Nutrition</a>
     </li>
     <li role="presentation">
         <a href="{{ url_for('start.home') }}" title="Home">Home</a>
@@ -73,4 +73,16 @@
             {% endfor %}
         </div>
     {% endfor %}
+
+    <div class="row t20">
+        <div class="col-lg-4 col-lg-offset-4">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <a href="{{ url_for('start.food_items_overview') }}" class="btn btn-primary btn-block">
+                        <i class="glyphicon glyphicon-arrow-left"></i> Add New Food Item
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

@@ -25,13 +25,9 @@ def meals_overview():
     meals_list = []
     for meal in meals:
         # moved the total calculations for the meal to model.py
-        meals_list.append({
-            'meal': meal,
-            'protein': meal.total_protein,
-            'fats': meal.total_fats,
-            'carbs': meal.total_carbs,
-            'calories': meal.total_calories
-        })
+        meals_list.append(
+            {'meal': meal, 'protein': meal.total_protein, 'fats': meal.total_fats, 'carbs': meal.total_carbs,
+             'calories': meal.total_calories})
     return render_template("meals_overview.html", user=current_user, meals_list=meals_list)
 
 
@@ -50,12 +46,8 @@ def create_meal():
 @login_required
 def edit_view_meal(meal_id):
     meal = Meal.query.get_or_404(meal_id)
-    macros_totals = {
-        'protein': meal.total_protein,
-        'carbs': meal.total_carbs,
-        'fats': meal.total_fats,
-        'calories': meal.total_calories
-    }
+    macros_totals = {'protein': meal.total_protein, 'carbs': meal.total_carbs, 'fats': meal.total_fats,
+                     'calories': meal.total_calories}
     # used to calculate the nutrients for specific log date
     foods = Food.query.filter((Food.user_id == current_user.id) | (Food.user_id == None)).all()
     return render_template("edit_view_meal.html", user=current_user, foods=foods, meal=meal, totals=macros_totals)
@@ -107,8 +99,7 @@ def add_food():
 
     else:
         # creates new food if id does not exist
-        new_food = Food(name=food_name, protein=proteins, carbs=carbs,
-                        fats=fats, user_id=current_user.id)
+        new_food = Food(name=food_name, protein=proteins, carbs=carbs, fats=fats, user_id=current_user.id)
 
         db.session.add(new_food)  # adds new food to db
 
@@ -173,14 +164,10 @@ def view_workout_record(workout_id):
         db.session.commit()
     else:
         workout = Workout.query.get_or_404(workout_id)
-    workout_info = {
-        'workout': workout,
-        'id': workout.id,
-        'date': workout.date,
-        'start_time': workout.start_time,
-        'end_time': workout.end_time,
-        'workout_notes': workout.workout_notes
-    }
+    workout_info = {'workout': workout, 'id': workout.id, 'date': workout.date, 'start_time': workout.start_time,
+                    'end_time': workout.end_time, 'workout_notes': workout.workout_notes
+
+                    }
     return render_template("view_workout_record.html", user=current_user, workout_id=workout.id,
                            workout_info=workout_info)
 
@@ -234,3 +221,63 @@ def add_ex():
     #
     # db.session.commit()
     return redirect(url_for('start.add_ex'))
+
+
+@start.route('/templates')
+@login_required
+def templates():
+    return render_template('templates.html', user=current_user)
+
+
+@start.route("/add_exercise")
+@login_required
+def exercises_overview():
+    exercises = Exercise.query.filter((Exercise.user_id == current_user.id) | (Exercise.user_id == None)).all()
+    return render_template("add_exercise.html", user=current_user, exercises=exercises, exercise=None)
+
+
+@start.route("/add_exercise", methods=['POST'])
+@login_required
+def add_exercise():
+    exercise_name = request.form.get('exercise-name')
+    ex_type = request.form.get('ex-type')
+    notes = request.form.get('notes')
+    rest_time = request.form.get('rest-time')
+    exercise_id = request.form.get('exercise-id')
+    # being able to edit and update values
+    if exercise_id:
+        # get_or_404 if id does not exist
+        exercise = Exercise.query.get_or_404(exercise_id)
+        exercise.name = exercise_name
+        exercise.type = ex_type
+        exercise.exercise_note = notes
+        exercise.rest_time = rest_time
+
+    else:
+        # creates new food if id does not exist
+        new_exercise = Exercise(name=exercise_name, type=ex_type, exercise_note=notes, rest_time=rest_time,
+                                user_id=current_user.id)
+
+        db.session.add(new_exercise)  # adds new food to db
+
+    db.session.commit()
+    return redirect(url_for('start.add_exercise'))
+
+
+# TODO: delete
+@start.route('/delete_exercise/<int:exercise_id>')
+@login_required
+def delete_exercise(exercise_id):
+    exercise = Exercise.query.get_or_404(exercise_id)
+    db.session.delete(exercise)
+    db.session.commit()
+    return redirect(url_for('start.exercises_overview'))
+
+
+# TODO: edit
+@start.route('/edit_exercise_item/<int:exercise_id>')
+@login_required
+def edit_exercise_item(exercise_id):
+    exercise = Exercise.query.get_or_404(exercise_id)
+    exercises = Exercise.query.filter((Exercise.user_id == current_user.id) | (Exercise.user_id == None)).all()
+    return render_template('add_exercise.html', user=current_user, exercise=exercise, exercises=exercises)

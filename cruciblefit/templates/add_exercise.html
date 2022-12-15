@@ -1,13 +1,13 @@
 {% extends "app_base.html" %}
-{% block title %}Crucible Fitness | Nutrition{% endblock %}
+{% block title %}Crucible Fitness | Fitness{% endblock %}
 {% block tabs %}
-    <li role="presentation" class="active">
+    <li role="presentation">
         <a href="{{ url_for('start.meals_overview') }}" title="View Meals">Nutrition</a>
     </li>
     <li role="presentation">
         <a href="{{ url_for('start.home') }}" title="Home">Home</a>
     </li>
-    <li role="presentation">
+    <li role="presentation" class="active">
         <a href="{{ url_for('start.fitness_overview') }}" title="View Workouts">Fitness</a>
     </li>
 {% endblock %}
@@ -17,32 +17,34 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <h3 class="lean-h text-black">
-                        <i class="glyphicon glyphicon-plus-sign"></i> Add New Food Item
+                        <i class="glyphicon glyphicon-plus-sign"></i> Add New Exercise
                     </h3>
                     <hr/>
 
-                    <form action="{{ url_for('start.food_items_overview') }}" method="POST" role="form">
+                    <form action="{{ url_for('start.exercises_overview') }}" method="POST" role="form">
 
                         <div class="row">
                             <div class="col-lg-4">
                                 <div class="form-group">
-                                    <label for="food-name">Food Name</label>
-                                    <input type="text" class="form-control" id="food-name" name="food-name" required
-                                           placeholder="Food Name" value="{{ food.name }}" autofocus>
+                                    <label for="exercise-name">Exercise</label>
+                                    <input type="text" class="form-control" id="exercise-name" name="exercise-name"
+                                           required
+                                           placeholder="Exercise" value="{{ exercise.name }}" autofocus>
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
-                                    <label for="protein">Protein</label>
-                                    <input type="number" class="form-control" id="protein" name="protein" required
-                                           placeholder="Protein" value="{{ food.protein }}">
+                                    <label for="protein">Type</label>
+                                    <input type="text" class="form-control" id="ex-type" name="ex-type" required
+                                           placeholder="Type" value="{{ exercise.type }}">
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
-                                    <label for="carbohydrates">Carbohydrates</label>
-                                    <input type="number" class="form-control" id="carbohydrates" name="carbohydrates" required
-                                           placeholder="Carbohydrates" value="{{ food.carbs }}">
+                                    <label for="carbohydrates">Rest Time(secs)</label>
+                                    <input type="number" class="form-control" id="rest-time" name="rest-time"
+                                           required
+                                           placeholder="120" value="{{ exercise.rest_time }}">
                                 </div>
                             </div>
                         </div>
@@ -50,16 +52,16 @@
                         <div class="row">
                             <div class="col-lg-4">
                                 <div class="form-group">
-                                    <label for="fat">Fat</label>
-                                    <input type="number" class="form-control" id="fat" name="fat" placeholder="Fat" required
-                                           value="{{ food.carbs }}">
+                                    <label for="fat">Notes</label>
+                                    <input type="text" class="form-control" id="notes" name="notes" placeholder="None"
+                                           value="{{ exercise.exercise_note }}">
                                 </div>
                             </div>
 
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label style="visibility:hidden">submit</label>
-                                    <input type="hidden" name="food-id" value="{{ food.id }}">
+                                    <input type="hidden" name="exercise-id" value="{{ exercise.id }}">
                                     <button type="submit" class="btn btn-primary btn-block">
                                         <i class="glyphicon glyphicon-upload"></i> Submit
                                     </button>
@@ -78,7 +80,7 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <h4 class="lean-h text-black">
-                        <i class="glyphicon glyphicon-th-list"></i> Existing Food Items
+                        <i class="glyphicon glyphicon-th-list"></i> Existing Exercises
                     </h4>
                 </div>
                 <div class="table-responsive">
@@ -87,29 +89,26 @@
                         <tr>
                             <th style="width: 5%;">#</th>
                             <th>Name</th>
-                            <th style="width: 10%;">Protein</th>
-                            <th style="width: 16%;">Carbohydrates</th>
-                            <th style="width: 10%;">Fat</th>
-                            <th style="width: 12%;">Calories</th>
+                            <th style="width: 10%;">Type</th>
+                            <th style="width: 16%;">Rest Time</th>
+                            <th style="width: 22%;">Exercise Notes</th>
                             <th style="width: 20%;">Actions</th>
                         </tr>
                         </thead>
                         <tbody>
-                        {% for food in foods %}
+                        {% for exercise in exercises %}
                             <tr>
                                 <td>{{ loop.index }}</td>
-                                <td>{{ food.name }}</td>
-                                <td>{{ food.protein }}</td>
-                                <td>{{ food.carbs }}</td>
-                                <td>{{ food.fats }}
-                                </th>
-                                <td>{{ food.calories }}</td>
+                                <td>{{ exercise.name }}</td>
+                                <td>{{ exercise.type }}</td>
+                                <td>{{ exercise.rest_time }}</td>
+                                <td>{{ exercise.exercise_note }}</td>
                                 <td>
-                                    <a href="{{ url_for('start.edit_food_item', food_id=food.id) }}"
+                                    <a href="{{ url_for('start.edit_exercise_item', exercise_id=exercise.id) }}"
                                        class="btn btn-default btn-xs">
                                         <i class="glyphicon glyphicon-pencil"></i> Edit
                                     </a>
-                                    <a href="{{ url_for('start.delete_food', food_id=food.id) }}"
+                                    <a href="{{ url_for('start.delete_exercise', exercise_id=exercise.id) }}"
                                        class="btn btn-danger btn-xs">
                                         <i class="glyphicon glyphicon-trash"></i> Delete
                                     </a>
@@ -127,7 +126,7 @@
         <div class="col-lg-4 col-lg-offset-4">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <a href="{{ url_for('start.meals_overview') }}" class="btn btn-primary btn-block">
+                    <a href="{{ url_for('start.fitness_overview') }}" class="btn btn-primary btn-block">
                         <i class="glyphicon glyphicon-arrow-left"></i> Done
                     </a>
                 </div>

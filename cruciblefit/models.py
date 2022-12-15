@@ -121,6 +121,22 @@ class Workout(db.Model):
                 total += exercise_info.weight
         return total
 
+    @property
+    def total_reps(self):
+        total = 0
+        for exercise_info in self.exercises_link:
+            if exercise_info.reps:
+                total += exercise_info.reps
+        return total
+
+    @property
+    def total_sets(self):
+        total = 0
+        for exercise_info in self.exercises_link:
+            if exercise_info.sets:
+                total += exercise_info.sets
+        return total
+
 
 class Exercise(db.Model):
     id = db.Column(db.Integer, primary_key=True)
