@@ -1,7 +1,6 @@
 from .extensions import db
 from flask_login import UserMixin
 from sqlalchemy.sql import func
-
 '''
 We will probably have a Class for User and Exercises here
 '''

@@ -58,7 +58,8 @@ def edit_view_meal(meal_id):
 def add_food_to_meal(meal_id):
     chosen_food = request.form.get('food-select')
     meal = Meal.query.get_or_404(meal_id)
-    meal.add_food(int(chosen_food))
+    #meal.add_food(int(chosen_food)) #causes a crash NoneType in /edit_view_meal/2
+    meal.add_food(chosen_food)
     return redirect(url_for('start.edit_view_meal', meal_id=meal_id))
 
 
